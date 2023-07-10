@@ -1,0 +1,35 @@
+{
+  "name": "wer1-backend",
+  "version": "1.0.0",
+  "description": "WeR1 backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --transpile-only --no-notify --exit-child src/index.ts",
+    "generate": "ts-node --transpile-only src/schema.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SrMoffat/wer1-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SrMoffat/wer1-backend/issues"
+  },
+  "homepage": "https://github.com/SrMoffat/wer1-backend#readme",
+  "dependencies": {
+    "@prisma/client": "3.15.2",
+    "apollo-server": "^3.1.1",
+    "graphql": "^15.5.1",
+    "nexus": "^1.1.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.1",
+    "prisma": "^3.5.0",
+    "ts-node": "^10.9.1"
+  }
+}
