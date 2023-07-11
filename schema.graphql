@@ -7,11 +7,17 @@ type AuthPayload {
   user: User!
 }
 
+type Like {
+  track: Track!
+  user: User!
+}
+
 type Mutation {
   createTrack(creationDate: String!, isrc: String!, length: Int!, productionDate: String!, title: String!, type: String!): Track!
   deleteTrack(id: Int!): Track!
+  like(trackId: Int!): Like
   login(email: String!, password: String!): AuthPayload!
-  signup(email: String!, name: String!, passowrd: String!): AuthPayload!
+  signup(email: String!, name: String!, password: String!): AuthPayload!
   updateTrack(creationDate: String, id: Int!, isrc: String, length: String, productionDate: String, title: String, type: String): Track!
 }
 
@@ -26,6 +32,7 @@ type Track {
   id: Int!
   isrc: String!
   length: Int!
+  likes: [User!]!
   productionDate: String!
   title: String!
   type: String!
@@ -34,6 +41,7 @@ type Track {
 type User {
   email: String!
   id: Int!
+  likes: [Like!]!
   name: String!
   password: String!
   tracks: [Track!]!

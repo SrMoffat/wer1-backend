@@ -19,6 +19,16 @@ export const Track = objectType({
                     }
                 }).addedBy()
             }
+        });
+        t.nonNull.list.nonNull.field("likes", {
+            type: "User",
+            resolve(parent, args, context) {
+                return context.prisma.track.findUnique({
+                    where: {
+                        id: parent.id
+                    }
+                }).likes()
+            }
         })
     },
 });
@@ -28,8 +38,8 @@ export const GetTrackQuery = extendType({
     definition(t) {
         t.nonNull.list.nonNull.field("fetchTracks", {
             type: "Track",
-            resolve(parent, args, context, info) {
-                return context.prisma.track.findMany();
+            async resolve(parent, args, context, info) {
+                return await context.prisma.track.findMany();
             },
         });
         t.field("getTrack", {
@@ -61,12 +71,12 @@ export const TrackMutation = extendType({
                 creationDate: nonNull(stringArg()),
                 type: nonNull(stringArg()),
             },
-            resolve(parent, args, context) {
+            async resolve(parent, args, context) {
                 const { userId } = context;
                 if (!userId) {
                     throw new Error("Invalid credentials");
                 }
-                const track = context.prisma.track.create({
+                const track = await context.prisma.track.create({
                     data: {
                         ...args,
                         addedBy: {
@@ -76,6 +86,7 @@ export const TrackMutation = extendType({
                         }
                     }
                 });
+                console.log(track)
                 return track;
             },
         });
