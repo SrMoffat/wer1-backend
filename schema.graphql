@@ -2,9 +2,16 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 type Mutation {
   createTrack(creationDate: String!, isrc: String!, length: Int!, productionDate: String!, title: String!, type: String!): Track!
   deleteTrack(id: Int!): Track!
+  login(email: String!, password: String!): AuthPayload!
+  signup(email: String!, name: String!, passowrd: String!): AuthPayload!
   updateTrack(creationDate: String, id: Int!, isrc: String, length: String, productionDate: String, title: String, type: String): Track!
 }
 
@@ -14,6 +21,7 @@ type Query {
 }
 
 type Track {
+  addedBy: User
   creationDate: String!
   id: Int!
   isrc: String!
@@ -21,4 +29,12 @@ type Track {
   productionDate: String!
   title: String!
   type: String!
+}
+
+type User {
+  email: String!
+  id: Int!
+  name: String!
+  password: String!
+  tracks: [Track!]!
 }

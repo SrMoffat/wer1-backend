@@ -28,6 +28,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Mutation: {};
   Query: {};
   Track: { // root type
@@ -38,6 +42,12 @@ export interface NexusGenObjects {
     productionDate: string; // String!
     title: string; // String!
     type: string; // String!
+  }
+  User: { // root type
+    email: string; // String!
+    id: number; // Int!
+    name: string; // String!
+    password: string; // String!
   }
 }
 
@@ -52,9 +62,15 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Mutation: { // field return type
     createTrack: NexusGenRootTypes['Track']; // Track!
     deleteTrack: NexusGenRootTypes['Track']; // Track!
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateTrack: NexusGenRootTypes['Track']; // Track!
   }
   Query: { // field return type
@@ -62,6 +78,7 @@ export interface NexusGenFieldTypes {
     getTrack: NexusGenRootTypes['Track'] | null; // Track
   }
   Track: { // field return type
+    addedBy: NexusGenRootTypes['User'] | null; // User
     creationDate: string; // String!
     id: number; // Int!
     isrc: string; // String!
@@ -70,12 +87,25 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     type: string; // String!
   }
+  User: { // field return type
+    email: string; // String!
+    id: number; // Int!
+    name: string; // String!
+    password: string; // String!
+    tracks: NexusGenRootTypes['Track'][]; // [Track!]!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   Mutation: { // field return type name
     createTrack: 'Track'
     deleteTrack: 'Track'
+    login: 'AuthPayload'
+    signup: 'AuthPayload'
     updateTrack: 'Track'
   }
   Query: { // field return type name
@@ -83,6 +113,7 @@ export interface NexusGenFieldTypeNames {
     getTrack: 'Track'
   }
   Track: { // field return type name
+    addedBy: 'User'
     creationDate: 'String'
     id: 'Int'
     isrc: 'String'
@@ -90,6 +121,13 @@ export interface NexusGenFieldTypeNames {
     productionDate: 'String'
     title: 'String'
     type: 'String'
+  }
+  User: { // field return type name
+    email: 'String'
+    id: 'Int'
+    name: 'String'
+    password: 'String'
+    tracks: 'Track'
   }
 }
 
@@ -105,6 +143,15 @@ export interface NexusGenArgTypes {
     }
     deleteTrack: { // args
       id: number; // Int!
+    }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      name: string; // String!
+      passowrd: string; // String!
     }
     updateTrack: { // args
       creationDate?: string | null; // String

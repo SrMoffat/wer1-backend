@@ -10,10 +10,20 @@ export const Track = objectType({
         t.nonNull.string("productionDate");
         t.nonNull.string("creationDate");
         t.nonNull.string("type");
+        t.field("addedBy", {
+            type: "User",
+            resolve(parent, args, context) {
+                return context.prisma.track.findUnique({
+                    where: {
+                        id: parent.id
+                    }
+                }).addedBy()
+            }
+        })
     },
 });
 
-export const TrackQuery = extendType({
+export const GetTrackQuery = extendType({
     type: "Query",
     definition(t) {
         t.nonNull.list.nonNull.field("fetchTracks", {
@@ -22,12 +32,6 @@ export const TrackQuery = extendType({
                 return context.prisma.track.findMany();
             },
         });
-    },
-});
-
-export const GetTrackQuery = extendType({
-    type: "Query",
-    definition(t) {
         t.field("getTrack", {
             type: "Track",
             args: {
@@ -58,20 +62,23 @@ export const TrackMutation = extendType({
                 type: nonNull(stringArg()),
             },
             resolve(parent, args, context) {
+                const { userId } = context;
+                if (!userId) {
+                    throw new Error("Invalid credentials");
+                }
                 const track = context.prisma.track.create({
                     data: {
-                        ...args
+                        ...args,
+                        addedBy: {
+                            connect: {
+                                id: userId
+                            }
+                        }
                     }
                 });
                 return track;
             },
         });
-    },
-});
-
-export const UpdateTrackMutation = extendType({
-    type: "Mutation",
-    definition(t) {
         t.nonNull.field("updateTrack", {
             type: "Track",
             args: {
@@ -95,12 +102,6 @@ export const UpdateTrackMutation = extendType({
                 });
             },
         });
-    },
-});
-
-export const DeleteTrackMutation = extendType({
-    type: "Mutation",
-    definition(t) {
         t.nonNull.field("deleteTrack", {
             type: "Track",
             args: {
@@ -116,4 +117,3 @@ export const DeleteTrackMutation = extendType({
         });
     },
 });
-
