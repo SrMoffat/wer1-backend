@@ -32,6 +32,10 @@ export interface NexusGenObjects {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Like: { // root type
+    track: NexusGenRootTypes['Track']; // Track!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Mutation: {};
   Query: {};
   Track: { // root type
@@ -66,9 +70,14 @@ export interface NexusGenFieldTypes {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Like: { // field return type
+    track: NexusGenRootTypes['Track']; // Track!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Mutation: { // field return type
     createTrack: NexusGenRootTypes['Track']; // Track!
     deleteTrack: NexusGenRootTypes['Track']; // Track!
+    like: NexusGenRootTypes['Like'] | null; // Like
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateTrack: NexusGenRootTypes['Track']; // Track!
@@ -83,6 +92,7 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     isrc: string; // String!
     length: number; // Int!
+    likes: NexusGenRootTypes['User'][]; // [User!]!
     productionDate: string; // String!
     title: string; // String!
     type: string; // String!
@@ -90,6 +100,7 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     email: string; // String!
     id: number; // Int!
+    likes: NexusGenRootTypes['Like'][]; // [Like!]!
     name: string; // String!
     password: string; // String!
     tracks: NexusGenRootTypes['Track'][]; // [Track!]!
@@ -101,9 +112,14 @@ export interface NexusGenFieldTypeNames {
     token: 'String'
     user: 'User'
   }
+  Like: { // field return type name
+    track: 'Track'
+    user: 'User'
+  }
   Mutation: { // field return type name
     createTrack: 'Track'
     deleteTrack: 'Track'
+    like: 'Like'
     login: 'AuthPayload'
     signup: 'AuthPayload'
     updateTrack: 'Track'
@@ -118,6 +134,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     isrc: 'String'
     length: 'Int'
+    likes: 'User'
     productionDate: 'String'
     title: 'String'
     type: 'String'
@@ -125,6 +142,7 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     email: 'String'
     id: 'Int'
+    likes: 'Like'
     name: 'String'
     password: 'String'
     tracks: 'Track'
@@ -144,6 +162,9 @@ export interface NexusGenArgTypes {
     deleteTrack: { // args
       id: number; // Int!
     }
+    like: { // args
+      trackId: number; // Int!
+    }
     login: { // args
       email: string; // String!
       password: string; // String!
@@ -151,7 +172,7 @@ export interface NexusGenArgTypes {
     signup: { // args
       email: string; // String!
       name: string; // String!
-      passowrd: string; // String!
+      password: string; // String!
     }
     updateTrack: { // args
       creationDate?: string | null; // String

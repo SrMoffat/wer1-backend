@@ -1,6 +1,7 @@
-import { objectType, stringArg, nonNull, extendType } from "nexus";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
+import { objectType, stringArg, nonNull, extendType } from "nexus";
+
 import { APP_SECRET_KEY } from "../utils/auth";
 
 export const AuthPayload = objectType({
@@ -23,15 +24,12 @@ export const AuthMutation = extendType({
                 password: nonNull(stringArg()),
             },
             async resolve(parent, args, context) {
-                // 1
                 const user = await context.prisma.user.findUnique({
                     where: { email: args.email },
                 });
                 if (!user) {
                     throw new Error("No such user found");
                 }
-
-                // 2
                 const valid = await bcrypt.compare(
                     args.password,
                     user.password,
@@ -39,11 +37,7 @@ export const AuthMutation = extendType({
                 if (!valid) {
                     throw new Error("Invalid password");
                 }
-
-                // 3
                 const token = jwt.sign({ userId: user.id }, APP_SECRET_KEY);
-
-                // 4
                 return {
                     token,
                     user,
@@ -55,14 +49,12 @@ export const AuthMutation = extendType({
             type: "AuthPayload",
             args: {
                 email: nonNull(stringArg()),
-                passowrd: nonNull(stringArg()),
+                password: nonNull(stringArg()),
                 name: nonNull(stringArg()),
             },
             async resolve(parent, args, context) {
                 const { email, name } = args;
-
-                const password = await bcrypt.hash(args.passowrd, 10);
-
+                const password = await bcrypt.hash(args.password, 10);
                 const user = await context.prisma.user.create({
                     data: {
                         email,
@@ -70,9 +62,7 @@ export const AuthMutation = extendType({
                         password
                     }
                 })
-
                 const token = jwt.sign({ userId: user.id }, APP_SECRET_KEY);
-
                 return {
                     token,
                     user

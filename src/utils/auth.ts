@@ -12,6 +12,4 @@ export function decodeAuthheader(authHeader: string): AuthTokenPayload {
         throw new Error("Invalid credentials");
     }
     return jwt.verify(token, APP_SECRET_KEY) as AuthTokenPayload
-
-
 };

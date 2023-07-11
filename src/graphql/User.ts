@@ -16,6 +16,16 @@ export const User = objectType({
                     }
                 }).tracks()
             }
+        });
+        t.nonNull.list.nonNull.field("likes", {
+            type: "Like",
+            resolve(parent, args, context) {
+                return context.prisma.user.findUnique({
+                    where: {
+                        id: parent.id
+                    }
+                }).likes()
+            }
         })
     }
 });
