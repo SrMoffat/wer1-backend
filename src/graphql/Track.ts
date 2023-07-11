@@ -9,6 +9,7 @@ export const Track = objectType({
         t.nonNull.string("isrc");
         t.nonNull.string("productionDate");
         t.nonNull.string("creationDate");
+        t.nonNull.dateTime("createdAt");
         t.nonNull.string("type");
         t.field("addedBy", {
             type: "User",
