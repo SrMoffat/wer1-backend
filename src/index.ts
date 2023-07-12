@@ -10,7 +10,7 @@ export const server = new ApolloServer({
     introspection: process.env.NODE_ENV !== "production",
     plugins: [
         ApolloServerPluginLandingPageGraphQLPlayground(),
-        ApolloServerPluginLandingPageLocalDefault()
+        // ApolloServerPluginLandingPageLocalDefault()
     ],
 });
 

@@ -1,19 +1,25 @@
-name: deploy-hackernews-app-heroku
-
+name: deploy-wer1-backend
 on:
   push:
     branches:
       - master
       - main
-
-jobs:  
+jobs:
   deploy:
+    name: Install and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci
-      - name: Run production migration                   
-        run: npm run migrate:deploy 
+      - run: |
+          if [ -e yarn.lock ]; then
+          yarn install --frozen-lockfile
+          elif [ -e package-lock.json ]; then
+          npm ci
+          else
+          npm i
+          fi
+      - name: Run production migration
+        run: npm run migrate:deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - uses: akhileshns/heroku-deploy@v3.12.12
