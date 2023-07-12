@@ -27,8 +27,13 @@ type Mutation {
 }
 
 type Query {
-  fetchTracks: [Track!]!
+  fetchTracks(filter: String, orderBy: [TrackOrderByInput!], skip: Int, take: Int): [TrackFeed!]!
   getTrack(id: Int!): Track
+}
+
+enum Sort {
+  asc
+  desc
 }
 
 type Track {
@@ -42,6 +47,21 @@ type Track {
   productionDate: String!
   title: String!
   type: String!
+}
+
+type TrackFeed {
+  count: Int!
+  id: ID
+  tracks: [Track!]!
+}
+
+input TrackOrderByInput {
+  createdAt: Sort
+  creationDate: Sort
+  length: Sort
+  productionDate: Sort
+  title: Sort
+  type: Sort
 }
 
 type User {

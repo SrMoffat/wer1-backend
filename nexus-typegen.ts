@@ -29,9 +29,18 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  TrackOrderByInput: { // input type
+    createdAt?: NexusGenEnums['Sort'] | null; // Sort
+    creationDate?: NexusGenEnums['Sort'] | null; // Sort
+    length?: NexusGenEnums['Sort'] | null; // Sort
+    productionDate?: NexusGenEnums['Sort'] | null; // Sort
+    title?: NexusGenEnums['Sort'] | null; // Sort
+    type?: NexusGenEnums['Sort'] | null; // Sort
+  }
 }
 
 export interface NexusGenEnums {
+  Sort: "asc" | "desc"
 }
 
 export interface NexusGenScalars {
@@ -64,6 +73,11 @@ export interface NexusGenObjects {
     title: string; // String!
     type: string; // String!
   }
+  TrackFeed: { // root type
+    count: number; // Int!
+    id?: string | null; // ID
+    tracks: NexusGenRootTypes['Track'][]; // [Track!]!
+  }
   User: { // root type
     email: string; // String!
     id: number; // Int!
@@ -80,7 +94,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
@@ -100,7 +114,7 @@ export interface NexusGenFieldTypes {
     updateTrack: NexusGenRootTypes['Track']; // Track!
   }
   Query: { // field return type
-    fetchTracks: NexusGenRootTypes['Track'][]; // [Track!]!
+    fetchTracks: NexusGenRootTypes['TrackFeed'][]; // [TrackFeed!]!
     getTrack: NexusGenRootTypes['Track'] | null; // Track
   }
   Track: { // field return type
@@ -114,6 +128,11 @@ export interface NexusGenFieldTypes {
     productionDate: string; // String!
     title: string; // String!
     type: string; // String!
+  }
+  TrackFeed: { // field return type
+    count: number; // Int!
+    id: string | null; // ID
+    tracks: NexusGenRootTypes['Track'][]; // [Track!]!
   }
   User: { // field return type
     email: string; // String!
@@ -143,7 +162,7 @@ export interface NexusGenFieldTypeNames {
     updateTrack: 'Track'
   }
   Query: { // field return type name
-    fetchTracks: 'Track'
+    fetchTracks: 'TrackFeed'
     getTrack: 'Track'
   }
   Track: { // field return type name
@@ -157,6 +176,11 @@ export interface NexusGenFieldTypeNames {
     productionDate: 'String'
     title: 'String'
     type: 'String'
+  }
+  TrackFeed: { // field return type name
+    count: 'Int'
+    id: 'ID'
+    tracks: 'Track'
   }
   User: { // field return type name
     email: 'String'
@@ -204,6 +228,12 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    fetchTracks: { // args
+      filter?: string | null; // String
+      orderBy?: NexusGenInputs['TrackOrderByInput'][] | null; // [TrackOrderByInput!]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+    }
     getTrack: { // args
       id: number; // Int!
     }
@@ -218,9 +248,9 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 
