@@ -7,6 +7,11 @@ type AuthPayload {
   user: User!
 }
 
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
 type Like {
   track: Track!
   user: User!
@@ -22,12 +27,18 @@ type Mutation {
 }
 
 type Query {
-  fetchTracks: [Track!]!
+  fetchTracks(filter: String, orderBy: [TrackOrderByInput!], skip: Int, take: Int): [TrackFeed!]!
   getTrack(id: Int!): Track
+}
+
+enum Sort {
+  asc
+  desc
 }
 
 type Track {
   addedBy: User
+  createdAt: DateTime!
   creationDate: String!
   id: Int!
   isrc: String!
@@ -36,6 +47,21 @@ type Track {
   productionDate: String!
   title: String!
   type: String!
+}
+
+type TrackFeed {
+  count: Int!
+  id: ID
+  tracks: [Track!]!
+}
+
+input TrackOrderByInput {
+  createdAt: Sort
+  creationDate: Sort
+  length: Sort
+  productionDate: Sort
+  title: Sort
+  type: Sort
 }
 
 type User {

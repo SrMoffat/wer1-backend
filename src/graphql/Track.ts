@@ -1,4 +1,31 @@
-import { extendType, nonNull, objectType, stringArg, intArg } from "nexus";
+import { extendType, nonNull, objectType, stringArg, intArg, inputObjectType, enumType, arg, list } from "nexus";
+import { Prisma } from "@prisma/client";
+
+export const Sort = enumType({
+    name: "Sort",
+    members: ["asc", "desc"],
+});
+
+export const TrackOrderByInput = inputObjectType({
+    name: "TrackOrderByInput",
+    definition(t) {
+        t.field("title", { type: Sort });
+        t.field("length", { type: Sort });
+        t.field("type", { type: Sort });
+        t.field("createdAt", { type: Sort });
+        t.field("productionDate", { type: Sort });
+        t.field("creationDate", { type: Sort });
+    },
+});
+
+export const TrackFeed = objectType({
+    name: "TrackFeed",
+    definition(t) {
+        t.nonNull.list.nonNull.field("tracks", { type: "Track" });
+        t.nonNull.int("count");
+        t.id("id");
+    },
+});
 
 export const Track = objectType({
     name: "Track",
@@ -9,6 +36,7 @@ export const Track = objectType({
         t.nonNull.string("isrc");
         t.nonNull.string("productionDate");
         t.nonNull.string("creationDate");
+        t.nonNull.dateTime("createdAt");
         t.nonNull.string("type");
         t.field("addedBy", {
             type: "User",
@@ -33,13 +61,38 @@ export const Track = objectType({
     },
 });
 
-export const GetTrackQuery = extendType({
+export const TrackQuery = extendType({
     type: "Query",
     definition(t) {
         t.nonNull.list.nonNull.field("fetchTracks", {
-            type: "Track",
+            type: "TrackFeed",
+            args: {
+                filter: stringArg(),
+                skip: intArg(),
+                take: intArg(),
+                orderBy: arg({ type: list(nonNull(TrackOrderByInput)) })
+            },
             async resolve(parent, args, context, info) {
-                return await context.prisma.track.findMany();
+                const where = args.filter
+                    ? { OR: [{ title: { contains: args.filter } }, { type: { contains: args.filter } }] }
+                    : {}
+                const tracks = await context.prisma.track.findMany({
+                    where,
+                    skip: args?.skip as number | undefined,
+                    take: args?.take as number | undefined,
+                    orderBy: args?.orderBy as
+                        | Prisma.Enumerable<Prisma.TrackOrderByWithRelationInput>
+                        | undefined,
+                });
+
+                const count = await context.prisma.track.count({ where });
+                const id = `main-feed:${JSON.stringify(args)}`;
+
+                return {
+                    tracks,
+                    count,
+                    id,
+                }
             },
         });
         t.field("getTrack", {
