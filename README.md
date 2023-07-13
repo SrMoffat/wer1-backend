@@ -14,6 +14,7 @@ WeR1 backend
     - `length`: Duration of the track in seconds
     - `ISRC`: Internation Standard Recording Code
     - `productionDate`: Date track was produced
+    - `creationDate`: Date track was created in external API
     - `type`: Genre of track
     - `isHit`: If the track is a hit
 - [] When searching for a track by name, if it doesn't exist in DB, fetch it from API and insert into DB then return results

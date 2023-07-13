@@ -4,24 +4,9 @@
  */
 
 
-import type { Context } from "./src/context"
-import type { core } from "nexus"
-declare global {
-  interface NexusGenCustomInputMethods<TypeName extends string> {
-    /**
-     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-     */
-    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
-  }
-}
-declare global {
-  interface NexusGenCustomOutputMethods<TypeName extends string> {
-    /**
-     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-     */
-    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
-  }
-}
+
+
+
 
 
 declare global {
@@ -29,18 +14,9 @@ declare global {
 }
 
 export interface NexusGenInputs {
-  TrackOrderByInput: { // input type
-    createdAt?: NexusGenEnums['Sort'] | null; // Sort
-    creationDate?: NexusGenEnums['Sort'] | null; // Sort
-    length?: NexusGenEnums['Sort'] | null; // Sort
-    productionDate?: NexusGenEnums['Sort'] | null; // Sort
-    title?: NexusGenEnums['Sort'] | null; // Sort
-    type?: NexusGenEnums['Sort'] | null; // Sort
-  }
 }
 
 export interface NexusGenEnums {
-  Sort: "asc" | "desc"
 }
 
 export interface NexusGenScalars {
@@ -49,40 +25,20 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
-  DateTime: any
 }
 
 export interface NexusGenObjects {
-  AuthPayload: { // root type
-    token: string; // String!
-    user: NexusGenRootTypes['User']; // User!
-  }
-  Like: { // root type
-    track: NexusGenRootTypes['Track']; // Track!
-    user: NexusGenRootTypes['User']; // User!
-  }
   Mutation: {};
   Query: {};
   Track: { // root type
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
     creationDate: string; // String!
-    id: number; // Int!
+    externalId: string; // String!
+    isHit: boolean; // Boolean!
     isrc: string; // String!
     length: number; // Int!
     productionDate: string; // String!
     title: string; // String!
     type: string; // String!
-  }
-  TrackFeed: { // root type
-    count: number; // Int!
-    id?: string | null; // ID
-    tracks: NexusGenRootTypes['Track'][]; // [Track!]!
-  }
-  User: { // root type
-    email: string; // String!
-    id: number; // Int!
-    name: string; // String!
-    password: string; // String!
   }
 }
 
@@ -94,101 +50,45 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
-  AuthPayload: { // field return type
-    token: string; // String!
-    user: NexusGenRootTypes['User']; // User!
-  }
-  Like: { // field return type
-    track: NexusGenRootTypes['Track']; // Track!
-    user: NexusGenRootTypes['User']; // User!
-  }
   Mutation: { // field return type
     createTrack: NexusGenRootTypes['Track']; // Track!
-    deleteTrack: NexusGenRootTypes['Track']; // Track!
-    like: NexusGenRootTypes['Like'] | null; // Like
-    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    updateTrack: NexusGenRootTypes['Track']; // Track!
+    updateTrack: NexusGenRootTypes['Track'] | null; // Track
   }
   Query: { // field return type
-    fetchTracks: NexusGenRootTypes['TrackFeed'][]; // [TrackFeed!]!
-    getTrack: NexusGenRootTypes['Track'] | null; // Track
+    fetchTracks: NexusGenRootTypes['Track'][]; // [Track!]!
   }
   Track: { // field return type
-    addedBy: NexusGenRootTypes['User'] | null; // User
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
     creationDate: string; // String!
-    id: number; // Int!
+    externalId: string; // String!
+    isHit: boolean; // Boolean!
     isrc: string; // String!
     length: number; // Int!
-    likes: NexusGenRootTypes['User'][]; // [User!]!
     productionDate: string; // String!
     title: string; // String!
     type: string; // String!
   }
-  TrackFeed: { // field return type
-    count: number; // Int!
-    id: string | null; // ID
-    tracks: NexusGenRootTypes['Track'][]; // [Track!]!
-  }
-  User: { // field return type
-    email: string; // String!
-    id: number; // Int!
-    likes: NexusGenRootTypes['Like'][]; // [Like!]!
-    name: string; // String!
-    password: string; // String!
-    tracks: NexusGenRootTypes['Track'][]; // [Track!]!
-  }
 }
 
 export interface NexusGenFieldTypeNames {
-  AuthPayload: { // field return type name
-    token: 'String'
-    user: 'User'
-  }
-  Like: { // field return type name
-    track: 'Track'
-    user: 'User'
-  }
   Mutation: { // field return type name
     createTrack: 'Track'
-    deleteTrack: 'Track'
-    like: 'Like'
-    login: 'AuthPayload'
-    signup: 'AuthPayload'
     updateTrack: 'Track'
   }
   Query: { // field return type name
-    fetchTracks: 'TrackFeed'
-    getTrack: 'Track'
+    fetchTracks: 'Track'
   }
   Track: { // field return type name
-    addedBy: 'User'
-    createdAt: 'DateTime'
     creationDate: 'String'
-    id: 'Int'
+    externalId: 'String'
+    isHit: 'Boolean'
     isrc: 'String'
     length: 'Int'
-    likes: 'User'
     productionDate: 'String'
     title: 'String'
     type: 'String'
-  }
-  TrackFeed: { // field return type name
-    count: 'Int'
-    id: 'ID'
-    tracks: 'Track'
-  }
-  User: { // field return type name
-    email: 'String'
-    id: 'Int'
-    likes: 'Like'
-    name: 'String'
-    password: 'String'
-    tracks: 'Track'
   }
 }
 
@@ -196,46 +96,23 @@ export interface NexusGenArgTypes {
   Mutation: {
     createTrack: { // args
       creationDate: string; // String!
+      externalId: string; // String!
+      isHit: boolean; // Boolean!
       isrc: string; // String!
       length: number; // Int!
       productionDate: string; // String!
       title: string; // String!
       type: string; // String!
     }
-    deleteTrack: { // args
-      id: number; // Int!
-    }
-    like: { // args
-      trackId: number; // Int!
-    }
-    login: { // args
-      email: string; // String!
-      password: string; // String!
-    }
-    signup: { // args
-      email: string; // String!
-      name: string; // String!
-      password: string; // String!
-    }
     updateTrack: { // args
       creationDate?: string | null; // String
-      id: number; // Int!
+      externalId?: string | null; // String
+      isHit?: boolean | null; // Boolean
       isrc?: string | null; // String
-      length?: string | null; // String
+      length?: number | null; // Int
       productionDate?: string | null; // String
       title?: string | null; // String
       type?: string | null; // String
-    }
-  }
-  Query: {
-    fetchTracks: { // args
-      filter?: string | null; // String
-      orderBy?: NexusGenInputs['TrackOrderByInput'][] | null; // [TrackOrderByInput!]
-      skip?: number | null; // Int
-      take?: number | null; // Int
-    }
-    getTrack: { // args
-      id: number; // Int!
     }
   }
 }
@@ -248,9 +125,9 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = keyof NexusGenInputs;
+export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = keyof NexusGenEnums;
+export type NexusGenEnumNames = never;
 
 export type NexusGenInterfaceNames = never;
 
@@ -271,7 +148,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: Context;
+  context: any;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

@@ -2,73 +2,22 @@
 ### Do not make changes to this file directly
 
 
-type AuthPayload {
-  token: String!
-  user: User!
-}
-
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar DateTime
-
-type Like {
-  track: Track!
-  user: User!
-}
-
 type Mutation {
-  createTrack(creationDate: String!, isrc: String!, length: Int!, productionDate: String!, title: String!, type: String!): Track!
-  deleteTrack(id: Int!): Track!
-  like(trackId: Int!): Like
-  login(email: String!, password: String!): AuthPayload!
-  signup(email: String!, name: String!, password: String!): AuthPayload!
-  updateTrack(creationDate: String, id: Int!, isrc: String, length: String, productionDate: String, title: String, type: String): Track!
+  createTrack(creationDate: String!, externalId: String!, isHit: Boolean!, isrc: String!, length: Int!, productionDate: String!, title: String!, type: String!): Track!
+  updateTrack(creationDate: String, externalId: String, isHit: Boolean, isrc: String, length: Int, productionDate: String, title: String, type: String): Track
 }
 
 type Query {
-  fetchTracks(filter: String, orderBy: [TrackOrderByInput!], skip: Int, take: Int): [TrackFeed!]!
-  getTrack(id: Int!): Track
-}
-
-enum Sort {
-  asc
-  desc
+  fetchTracks: [Track!]!
 }
 
 type Track {
-  addedBy: User
-  createdAt: DateTime!
   creationDate: String!
-  id: Int!
+  externalId: String!
+  isHit: Boolean!
   isrc: String!
   length: Int!
-  likes: [User!]!
   productionDate: String!
   title: String!
   type: String!
-}
-
-type TrackFeed {
-  count: Int!
-  id: ID
-  tracks: [Track!]!
-}
-
-input TrackOrderByInput {
-  createdAt: Sort
-  creationDate: Sort
-  length: Sort
-  productionDate: Sort
-  title: Sort
-  type: Sort
-}
-
-type User {
-  email: String!
-  id: Int!
-  likes: [Like!]!
-  name: String!
-  password: String!
-  tracks: [Track!]!
 }
