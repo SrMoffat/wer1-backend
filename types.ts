@@ -1,5 +1,5 @@
 export interface RequestDetails {
-    method: string;
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
     url: string;
     additionalParams: Object;
 }

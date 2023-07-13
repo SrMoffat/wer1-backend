@@ -1,20 +1,19 @@
-import { makeOAuthRequest } from "./utils/auth";
 import { PrismaClient } from "@prisma/client";
+
+import { generateSignature, fetchTracksByTitle } from "./utils";
 
 const prisma = new PrismaClient();
 
 const MUSIC_STORY_BASE_URL = "https://api.music-story.com";
-const apiUrl = `${MUSIC_STORY_BASE_URL}/oauth/request_token`;
-const method = 'GET';
-const additionalParams = {}; // Additional parameters for the request, if any
+const MUSIC_STORY_LANGUAGE = "en";
 
 // (async () => {
 //     try {
-//         const requestDetails = {
-//             method,
-//             url: apiUrl,
-//             additionalParams
-//         }
+// const requestDetails = {
+//     method,
+//     url: apiUrl,
+//     additionalParams
+// }
 //         const res = await makeOAuthRequest(requestDetails)
 //         console.log("Data==>", res);
 //     } catch (error) {
@@ -24,17 +23,31 @@ const additionalParams = {}; // Additional parameters for the request, if any
 
 async function seedDatabase() {
     try {
-        const newLink = await prisma.track.create({
-            data: {
-                title: 'Rap Kwa MIC',
-                type: 'HipHop',
-                isrc: "RAPMIC56789",
-                length: 635353,
-                creationDate: `${new Date()}`,
-                productionDate: `${new Date()}`,
-            },
+        // const newLink = await prisma.track.create({
+        //     data: {
+        //         title: 'Rap Kwa MIC',
+        //         type: 'HipHop',
+        //         isrc: "RAPMIC56789",
+        //         length: 635353,
+        //         creationDate: `${new Date()}`,
+        //         productionDate: `${new Date()}`,
+        //     },
+        // })
+        // console.error("newLink==>", newLink);
+
+        const additionalParams = {
+            title: "Trance"
+        };
+        const url = `${MUSIC_STORY_BASE_URL}/${MUSIC_STORY_LANGUAGE}/track/search`;
+
+        const results = await fetchTracksByTitle({
+            method: "GET",
+            url,
+            additionalParams
         })
-        console.error("newLink==>", newLink);
+        // console.log("results==>", results);
+
+
 
     } catch (error) {
         console.error("Erroor==>", error);
