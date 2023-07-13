@@ -37,7 +37,6 @@ let tracks: NexusGenObjects["Track"][] = [
 export const Track = objectType({
     name: "Track",
     definition(t) {
-        // t.nonNull.string("internalId");
         t.nonNull.string("externalId");
         t.nonNull.string("isrc");
         t.nonNull.string("title");
@@ -110,6 +109,18 @@ export const TrackMutation = extendType({
                     ...candidateTrack[0],
                     ...args,
                 }
+            },
+        });
+        t.field("deleteTrack", {
+            type: "Track",
+            args: {
+                externalId: stringArg(),
+            },
+            resolve(parent, args, context) {
+                const remainingTracks = tracks.filter(track => track.externalId !== args.externalId);
+                const candidateTrack = tracks.filter(track => track.externalId === args.externalId);
+                tracks = remainingTracks as NexusGenObjects["Track"][]
+                return candidateTrack
             },
         });
     },
