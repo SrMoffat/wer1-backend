@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { PrismaClient } from "@prisma/client";
 
-import { decodeAuthheader } from "./utils/auth";
+import { decodeAuthHeader } from "./utils/auth";
 
 export const prisma = new PrismaClient();
 
@@ -12,7 +12,7 @@ export interface Context {
 
 export const context = ({ req }: { req: Request }): Context => {
     const token = req && req.headers.authorization
-        ? decodeAuthheader(req.headers.authorization)
+        ? decodeAuthHeader(req.headers.authorization)
         : null
     return {
         prisma,

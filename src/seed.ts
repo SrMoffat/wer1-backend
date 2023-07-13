@@ -1,50 +1,30 @@
-import axios from "axios";
-import { PrismaClient } from "@prisma/client";
+import { makeOAuthRequest } from "./utils/auth";
 
-const MUSIC_STORY_BASE_URL = "http://api.music-story.com";
-const MUSIC_STORY_LANGUAGE = "en";
-const TRACK_ID = "25462597651544488";
+const MUSIC_STORY_BASE_URL = "https://api.music-story.com";
 
-const prisma = new PrismaClient();
+const consumerKey = "328b36e8f8da29da381990f593d965347b1763a5";
+const consumerSecret = "83a02eb8b095df5f75f944a0f55de36aff0c3424";
 
-async function main() {
+const accessToken = "caa3544ce84a374a1ed744542524aac75c783966";
+const accessTokenSecret = "9eaecbf5ef7e6c9ab19c3cd237127558347bb2ab";
+const apiUrl = `${MUSIC_STORY_BASE_URL}/oauth/request_token`;
+const method = 'GET';
+const additionalParams = {}; // Additional parameters for the request, if any
+
+(async () => {
     try {
-        // Fetch 10 tracks
-        console.log("=====Tracks=======");
-        const response = await axios({
-            method: 'GET',
-            url: `${MUSIC_STORY_BASE_URL}/${MUSIC_STORY_LANGUAGE}/track/${TRACK_ID}`,
-            // responseType: 'stream'
-        })
-        const data = await response.data
-        console.log("=====data=======", data);
-
-            // .then(function (response) {
-            //     response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
-            // });
-        // const newLink = await prisma.track.create({
-        //     data: {
-        //         creationDate: `${new Date()}`,
-        //         productionDate: `${new Date()}`,
-        //         isrc: `${Math.floor(Math.random() * 10)}`,
-        //         length: 344,
-        //         type: "HipHop",
-        //         title: "I'm Only Human",
-        //     },
-        // })
-        // const allTracks = await prisma.track.findMany();
-        // console.log({
-        //     newLink,
-        //     allTracks
-        // })
+        const requestDetails = {
+            method,
+            url: apiUrl,
+            consumerKey,
+            consumerSecret,
+            accessToken,
+            accessTokenSecret,
+            additionalParams
+        }
+        const res = await makeOAuthRequest(requestDetails)
+        console.log("Data==>", res);
     } catch (error) {
-        console.log("=====Error=======");
-        console.log(error);
-    } finally {
-        console.log("=====Finally======");
-        await prisma.$disconnect();
+        console.error("Erroor==>", error);
     }
-}
-
-main();
-
+})();
