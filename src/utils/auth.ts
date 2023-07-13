@@ -1,34 +1,17 @@
 // https://developers.music-story.com/developers
 import * as jwt from "jsonwebtoken";
+import axios from "axios";
 import crypto from "crypto";
 import querystring from "querystring";
-import axios, { AxiosError } from "axios";
 
-export const MUSIC_STORY_BASE_URL = "https://api.music-story.com";
-export const APP_SECRET_KEY = "W3R1-b4ck3nd-s3rv3r";
-export const consumerKey = "328b36e8f8da29da381990f593d965347b1763a5";
-export const consumerSecret = "83a02eb8b095df5f75f944a0f55de36aff0c3424";
-export const accessToken = "1ecd74a83ce347fe9803a5885426fac2fa4df6a5";
-export const accessTokenSecret = "4b5025ada4e6f4ecc6b0c1510a69b31a8d7f3a99";
-export const apiUrl = `${MUSIC_STORY_BASE_URL}/oauth/request_token`;
-const method = 'GET';
-const additionalParams = {}; // Additional parameters for the request, if any
+import { RequestDetails, AuthTokenPayload } from "../../types";
 
-interface RequestDetails {
-    method: string;
-    url: string;
-    consumerKey: string;
-    consumerSecret: string;
-    accessToken: string;
-    accessTokenSecret: string;
-    additionalParams: Object;
+const APP_SECRET_KEY = process.env.APP_SECRET_KEY || "W3R1-b4ck3nd-s3rv3r";
 
-
-}
-
-export interface AuthTokenPayload {
-    userId: number;
-}
+const consumerKey = process.env.MUSIC_STORY_CONSUMER_KEY || '';
+const consumerSecret = process.env.MUSIC_STORY_CONSUMER_SECRET || '';
+const accessToken = process.env.MUSIC_STORY_ACCESS_TOKEN || '';
+const accessTokenSecret = process.env.MUSIC_STORY_ACCESS_TOKEN_SECRET || '';
 
 export function decodeAuthHeader(authHeader: string): AuthTokenPayload {
     const token = authHeader.replace("Bearer ", "");
@@ -62,10 +45,6 @@ export async function makeOAuthRequest(details: RequestDetails) {
         const {
             url,
             method,
-            accessToken,
-            consumerKey,
-            consumerSecret,
-            accessTokenSecret,
             additionalParams = {}
         } = details;
         const oauthParams = {
@@ -100,4 +79,3 @@ export async function makeOAuthRequest(details: RequestDetails) {
         throw error;
     }
 }
-

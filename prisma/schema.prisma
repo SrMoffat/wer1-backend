@@ -12,11 +12,11 @@ datasource db {
 
 model Track {
   id                    Int      @id @default(autoincrement())
-  createdAt             DateTime @default(now())
+  type                  String
+  isrc                  String
   title                 String
   length                Int
-  isrc                  String
-  type                  String
-  productionDate        String
+  createdAt             DateTime @default(now())
   creationDate          String
+  productionDate        String
 }
