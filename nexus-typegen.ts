@@ -55,8 +55,8 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createTrack: NexusGenRootTypes['Track']; // Track!
-    deleteTrack: NexusGenRootTypes['Track'] | null; // Track
-    updateTrack: NexusGenRootTypes['Track'] | null; // Track
+    deleteTrack: NexusGenRootTypes['Track']; // Track!
+    updateTrack: NexusGenRootTypes['Track']; // Track!
   }
   Query: { // field return type
     fetchTracks: NexusGenRootTypes['Track'][]; // [Track!]!

@@ -86,7 +86,7 @@ export const TrackMutation = extendType({
                 return track;
             }
         });
-        t.field("updateTrack", {
+        t.nonNull.field("updateTrack", {
             type: "Track",
             args: {
                 externalId: stringArg(),
@@ -111,7 +111,7 @@ export const TrackMutation = extendType({
                 }
             },
         });
-        t.field("deleteTrack", {
+        t.nonNull.field("deleteTrack", {
             type: "Track",
             args: {
                 externalId: stringArg(),
