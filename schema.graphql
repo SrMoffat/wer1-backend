@@ -15,10 +15,10 @@ type Query {
 type Track {
   creationDate: String!
   externalId: String!
-  isHit: Boolean!
   isrc: String!
-  length: Int!
+  length: String!
   productionDate: String!
   title: String!
   type: String!
+  updateDate: String!
 }

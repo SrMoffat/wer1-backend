@@ -15,8 +15,10 @@ model Track {
   type                  String
   isrc                  String
   title                 String
-  length                Int
+  length                String
   createdAt             DateTime @default(now())
+  updateDate            String
+  externalId            String
   creationDate          String
   productionDate        String
 }

@@ -33,12 +33,12 @@ export interface NexusGenObjects {
   Track: { // root type
     creationDate: string; // String!
     externalId: string; // String!
-    isHit: boolean; // Boolean!
     isrc: string; // String!
-    length: number; // Int!
+    length: string; // String!
     productionDate: string; // String!
     title: string; // String!
     type: string; // String!
+    updateDate: string; // String!
   }
 }
 
@@ -64,12 +64,12 @@ export interface NexusGenFieldTypes {
   Track: { // field return type
     creationDate: string; // String!
     externalId: string; // String!
-    isHit: boolean; // Boolean!
     isrc: string; // String!
-    length: number; // Int!
+    length: string; // String!
     productionDate: string; // String!
     title: string; // String!
     type: string; // String!
+    updateDate: string; // String!
   }
 }
 
@@ -85,12 +85,12 @@ export interface NexusGenFieldTypeNames {
   Track: { // field return type name
     creationDate: 'String'
     externalId: 'String'
-    isHit: 'Boolean'
     isrc: 'String'
-    length: 'Int'
+    length: 'String'
     productionDate: 'String'
     title: 'String'
     type: 'String'
+    updateDate: 'String'
   }
 }
 

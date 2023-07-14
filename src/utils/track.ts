@@ -1,14 +1,41 @@
 // https://developers.music-story.com/developers/track#c_search
-import { RequestDetails } from "../../types";
-import querystring from "querystring";
 import axios from "axios";
+import { pick, get } from "lodash";
+import querystring from "querystring";
 import { parseStringPromise } from "xml2js";
 
+import { NexusGenObjects } from "../../nexus-typegen";
+import { RequestDetails, XMLProperties } from "../../types";
+import { generateOAuthParams, generateSignature, encodeValue } from "./auth";
 
+function extractTrackDetails(details: XMLProperties) {
+    const selectKeys = [
+        "id",
+        "id_record",
+        "title",
+        "length",
+        "isrc",
+        "production_date",
+        "update_date",
+        "creation_date"
+    ];
+    const response = details.root;
+    const data = response.data[0].item;
+    const massaged = data.map(entry => pick(entry, selectKeys));
+    const morphed = massaged.map(entry => ({
+        type: "track",
+        isrc: String(get(entry?.isrc, "[0]")),
+        title: String(get(entry?.title, "[0]")),
+        externalId: String(get(entry?.id, "[0]")),
+        length: String(get(entry?.length, "[0]")),
+        updateDate: String(get(entry?.update_date, "[0]")),
+        creationDate: String(get(entry?.creation_date, "[0]")),
+        productionDate: String(get(entry?.production_date, "[0]")),
+    }));
+    return morphed;
+}
 
-import { generateOAuthParams, generateSignature, encodeValue, accessToken } from "./auth";
-
-export async function fetchTracksByTitle(details: RequestDetails) {
+export async function fetchTracksByTitle(details: RequestDetails): Promise<NexusGenObjects["Track"][]> {
     try {
         const {
             url,
@@ -30,13 +57,11 @@ export async function fetchTracksByTitle(details: RequestDetails) {
             method,
             url: `${url}?${paramsString}&oauth_signature=${encodeValue(signature)}`,
         });
-        const data = await response.data
+        const data = response.data;
         const jsonData = await parseStringPromise(data);
-        const trackDetails = extractTrackDetails(jsonData)
-        console.log("response==>", response);
-
-        // return response.data;
+        const trackDetails = extractTrackDetails(jsonData);
+        return trackDetails;
     } catch (error) {
         throw error;
-    }
-}
+    };
+};
