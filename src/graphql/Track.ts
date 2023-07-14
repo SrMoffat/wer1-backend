@@ -15,16 +15,6 @@ export const Track = objectType({
         t.nonNull.string("externalId");
         t.nonNull.string("creationDate");
         t.nonNull.string("productionDate");
-        // t.nonNull.list.field("likedBy", {
-        //     type: "User",
-        //     resolve(parent, args, context) {
-        //         return context.prisma.track.findUnique({
-        //             where: {
-        //                 id: parent.id
-        //             }
-        //         })
-        //     }
-        // });
     },
 });
 export const TrackQuery = extendType({
