@@ -28,12 +28,20 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['SanitizedUser']; // SanitizedUser!
+  }
   Mutation: {};
   Query: {};
+  SanitizedUser: { // root type
+    email: string; // String!
+    id: number; // Int!
+    name: string; // String!
+  }
   Track: { // root type
     creationDate: string; // String!
     externalId: string; // String!
-    id: number; // Int!
     isrc: string; // String!
     length: string; // String!
     productionDate: string; // String!
@@ -60,8 +68,14 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['SanitizedUser']; // SanitizedUser!
+  }
   Mutation: { // field return type
     deleteTrack: NexusGenRootTypes['Track'] | null; // Track
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateTrack: NexusGenRootTypes['Track']; // Track!
   }
   Query: { // field return type
@@ -69,10 +83,14 @@ export interface NexusGenFieldTypes {
     searchTrackByInternalId: NexusGenRootTypes['Track'] | null; // Track
     searchTrackByTitle: Array<NexusGenRootTypes['Track'] | null>; // [Track]!
   }
+  SanitizedUser: { // field return type
+    email: string; // String!
+    id: number; // Int!
+    name: string; // String!
+  }
   Track: { // field return type
     creationDate: string; // String!
     externalId: string; // String!
-    id: number; // Int!
     isrc: string; // String!
     length: string; // String!
     productionDate: string; // String!
@@ -83,15 +101,20 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     email: string; // String!
     id: number; // Int!
-    liked: Array<NexusGenRootTypes['Track'] | null>; // [Track]!
     name: string; // String!
     password: string; // String!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'SanitizedUser'
+  }
   Mutation: { // field return type name
     deleteTrack: 'Track'
+    login: 'AuthPayload'
+    signup: 'AuthPayload'
     updateTrack: 'Track'
   }
   Query: { // field return type name
@@ -99,10 +122,14 @@ export interface NexusGenFieldTypeNames {
     searchTrackByInternalId: 'Track'
     searchTrackByTitle: 'Track'
   }
+  SanitizedUser: { // field return type name
+    email: 'String'
+    id: 'Int'
+    name: 'String'
+  }
   Track: { // field return type name
     creationDate: 'String'
     externalId: 'String'
-    id: 'Int'
     isrc: 'String'
     length: 'String'
     productionDate: 'String'
@@ -113,7 +140,6 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     email: 'String'
     id: 'Int'
-    liked: 'Track'
     name: 'String'
     password: 'String'
   }
@@ -123,6 +149,15 @@ export interface NexusGenArgTypes {
   Mutation: {
     deleteTrack: { // args
       internalId?: number | null; // Int
+    }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      name: string; // String!
+      password: string; // String!
     }
     updateTrack: { // args
       creationDate?: string | null; // String

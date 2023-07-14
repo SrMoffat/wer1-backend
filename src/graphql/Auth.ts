@@ -1,15 +1,24 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
+
 import { objectType, stringArg, nonNull, extendType } from "nexus";
 
 import { APP_SECRET_KEY } from "../utils/auth";
 
+export const SanitizedUser = objectType({
+    name: "SanitizedUser",
+    definition(t) {
+        t.nonNull.string("name");
+        t.nonNull.string("email");
+        t.nonNull.int("id");
+    },
+});
 export const AuthPayload = objectType({
     name: "AuthPayload",
     definition(t) {
         t.nonNull.string("token");
         t.nonNull.field("user", {
-            type: "User"
+            type: "SanitizedUser"
         })
     },
 });
@@ -43,7 +52,6 @@ export const AuthMutation = extendType({
                 };
             },
         });
-
         t.nonNull.field("signup", {
             type: "AuthPayload",
             args: {
@@ -67,6 +75,6 @@ export const AuthMutation = extendType({
                     user
                 }
             }
-        })
+        });
     },
 });
