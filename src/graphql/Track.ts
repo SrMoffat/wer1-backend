@@ -1,9 +1,8 @@
+import { uniqBy } from "lodash";
 import { booleanArg, extendType, nonNull, objectType, stringArg, intArg } from "nexus";
 
 import { fetchTracksByTitle } from "../utils";
 import { NexusGenObjects } from "../../nexus-typegen";
-
-
 
 let tracks: NexusGenObjects["Track"][] = [
     {
@@ -86,10 +85,10 @@ export const TrackQuery = extendType({
                         additionalParams
                     })
                     const hasExternalResults = musicStoryResults.length;
-
                     if (hasExternalResults) {
                         // Add each to DB
-                        console.log("404: No track found in internal DB but in Music Story", musicStoryResults)
+                        const dedupedResults = uniqBy(musicStoryResults, "isrc")
+                        console.log("404: No track found in internal DB but in Music Story", dedupedResults)
                         // Return results from our DB or MS depending on what we decide
                     } else {
                         console.log("404: No track found in internal DB and Music Story")
