@@ -6,7 +6,7 @@ import { context } from "./context";
 
 export const server = new ApolloServer({
     schema,
-    // context,
+    context,
     // introspection: process.env.NODE_ENV !== "production",
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });

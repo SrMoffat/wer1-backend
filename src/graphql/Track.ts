@@ -1,6 +1,9 @@
 import { booleanArg, extendType, nonNull, objectType, stringArg, intArg } from "nexus";
 
+import { fetchTracksByTitle } from "../utils";
 import { NexusGenObjects } from "../../nexus-typegen";
+
+
 
 let tracks: NexusGenObjects["Track"][] = [
     {
@@ -52,8 +55,48 @@ export const TrackQuery = extendType({
     definition(t) {
         t.nonNull.list.nonNull.field("fetchTracks", {
             type: "Track",
-            resolve(parent, args, context) {
-                return tracks;
+            async resolve(parent, args, context) {
+                return await context.prisma.track.findMany();
+            }
+        });
+        t.nonNull.list.nonNull.field("searchTrack", {
+            type: "Track",
+            args: {
+                title: nonNull(stringArg())
+            },
+            async resolve(parent, args, context) {
+                // Look for track by title from our DB
+                const existingTracks = await context.prisma.track.findMany({
+                    where: {
+                        title: {
+                            contains: args.title
+                        }
+                    }
+                });
+                const hasInternalResults = existingTracks.length;
+                if (hasInternalResults) {
+                    // Return track results if any exists in our DB
+                    return existingTracks;
+                } else {
+                    //  Otherwise search for the title in Music Story
+                    const additionalParams = {
+                        title: args.title
+                    };
+                    const musicStoryResults = await fetchTracksByTitle({
+                        additionalParams
+                    })
+                    const hasExternalResults = musicStoryResults.length;
+
+                    if (hasExternalResults) {
+                        // Add each to DB
+                        console.log("404: No track found in internal DB but in Music Story", musicStoryResults)
+                        // Return results from our DB or MS depending on what we decide
+                    } else {
+                        console.log("404: No track found in internal DB and Music Story")
+                        // Return 404
+                        return []
+                    }
+                }
             }
         })
     },
@@ -61,29 +104,6 @@ export const TrackQuery = extendType({
 export const TrackMutation = extendType({
     type: "Mutation",
     definition(t) {
-        t.nonNull.field("createTrack", {
-            type: "Track",
-            args: {
-                externalId: nonNull(stringArg()),
-                title: nonNull(stringArg()),
-                type: nonNull(stringArg()),
-                isrc: nonNull(stringArg()),
-                length: nonNull(intArg()),
-                productionDate: nonNull(stringArg()),
-                creationDate: nonNull(stringArg()),
-                isHit: nonNull(booleanArg())
-            },
-            resolve(parent, args, context) {
-                let idCount = tracks.length + 1;
-                const track = {
-                    internalId: idCount,
-                    id: String(idCount),
-                    ...args
-                }
-                tracks.push(track)
-                return track;
-            }
-        });
         t.nonNull.field("updateTrack", {
             type: "Track",
             args: {
@@ -109,17 +129,17 @@ export const TrackMutation = extendType({
                 }
             },
         });
-        t.nonNull.field("deleteTrack", {
-            type: "Track",
-            args: {
-                externalId: stringArg(),
-            },
-            resolve(parent, args, context) {
-                const remainingTracks = tracks.filter(track => track.externalId !== args.externalId);
-                const candidateTrack = tracks.filter(track => track.externalId === args.externalId);
-                tracks = remainingTracks as NexusGenObjects["Track"][]
-                return candidateTrack
-            },
-        });
+        // t.nonNull.field("deleteTrack", {
+        //     type: "Track",
+        //     args: {
+        //         externalId: stringArg(),
+        //     },
+        //     resolve(parent, args, context) {
+        //         const remainingTracks = tracks.filter(track => track.externalId !== args.externalId);
+        //         const candidateTrack = tracks.filter(track => track.externalId === args.externalId);
+        //         tracks = remainingTracks as NexusGenObjects["Track"][]
+        //         return candidateTrack
+        //     },
+        // });
     },
 });

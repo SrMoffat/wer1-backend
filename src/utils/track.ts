@@ -8,6 +8,9 @@ import { NexusGenObjects } from "../../nexus-typegen";
 import { RequestDetails, XMLProperties } from "../../types";
 import { generateOAuthParams, generateSignature, encodeValue } from "./auth";
 
+const MUSIC_STORY_LANGUAGE = "en";
+const MUSIC_STORY_BASE_URL = "https://api.music-story.com";
+
 function extractTrackDetails(details: XMLProperties) {
     const selectKeys = [
         "id",
@@ -37,11 +40,9 @@ function extractTrackDetails(details: XMLProperties) {
 
 export async function fetchTracksByTitle(details: RequestDetails): Promise<NexusGenObjects["Track"][]> {
     try {
-        const {
-            url,
-            method,
-            additionalParams = {}
-        } = details;
+        const method = "GET";
+        const url = `${MUSIC_STORY_BASE_URL}/${MUSIC_STORY_LANGUAGE}/track/search`
+        const { additionalParams } = details;
         const oauthParams = {
             ...generateOAuthParams(),
             ...additionalParams
