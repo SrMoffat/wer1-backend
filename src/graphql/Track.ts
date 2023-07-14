@@ -6,6 +6,7 @@ import { fetchTracksByTitle } from "../utils";
 export const Track = objectType({
     name: "Track",
     definition(t) {
+        t.nonNull.int("id");
         t.nonNull.string("isrc");
         t.nonNull.string("type");
         t.nonNull.string("title");
@@ -14,6 +15,16 @@ export const Track = objectType({
         t.nonNull.string("externalId");
         t.nonNull.string("creationDate");
         t.nonNull.string("productionDate");
+        // t.nonNull.list.field("likedBy", {
+        //     type: "User",
+        //     resolve(parent, args, context) {
+        //         return context.prisma.track.findUnique({
+        //             where: {
+        //                 id: parent.id
+        //             }
+        //         })
+        //     }
+        // });
     },
 });
 export const TrackQuery = extendType({

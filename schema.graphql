@@ -16,6 +16,7 @@ type Query {
 type Track {
   creationDate: String!
   externalId: String!
+  id: Int!
   isrc: String!
   length: String!
   productionDate: String!

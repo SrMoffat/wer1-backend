@@ -33,6 +33,7 @@ export interface NexusGenObjects {
   Track: { // root type
     creationDate: string; // String!
     externalId: string; // String!
+    id: number; // Int!
     isrc: string; // String!
     length: string; // String!
     productionDate: string; // String!
@@ -71,6 +72,7 @@ export interface NexusGenFieldTypes {
   Track: { // field return type
     creationDate: string; // String!
     externalId: string; // String!
+    id: number; // Int!
     isrc: string; // String!
     length: string; // String!
     productionDate: string; // String!
@@ -100,6 +102,7 @@ export interface NexusGenFieldTypeNames {
   Track: { // field return type name
     creationDate: 'String'
     externalId: 'String'
+    id: 'Int'
     isrc: 'String'
     length: 'String'
     productionDate: 'String'
