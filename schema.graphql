@@ -3,6 +3,7 @@
 
 
 type Mutation {
+  deleteTrack(internalId: Int): Track
   updateTrack(creationDate: String, internalId: String, isrc: String, length: String, productionDate: String, title: String, type: String, updateDate: String): Track!
 }
 

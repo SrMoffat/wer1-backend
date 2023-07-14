@@ -1,4 +1,4 @@
-import { uniqBy, get } from "lodash";
+import { uniqBy } from "lodash";
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 
 import { fetchTracksByTitle } from "../utils";
@@ -6,14 +6,14 @@ import { fetchTracksByTitle } from "../utils";
 export const Track = objectType({
     name: "Track",
     definition(t) {
-        t.nonNull.string("externalId");
         t.nonNull.string("isrc");
-        t.nonNull.string("title");
         t.nonNull.string("type");
+        t.nonNull.string("title");
         t.nonNull.string("length");
+        t.nonNull.string("updateDate");
+        t.nonNull.string("externalId");
         t.nonNull.string("creationDate");
         t.nonNull.string("productionDate");
-        t.nonNull.string("updateDate");
     },
 });
 export const TrackQuery = extendType({
@@ -92,7 +92,7 @@ export const TrackQuery = extendType({
                         }
                     })
                     return result
-                } catch(error){
+                } catch (error) {
                     throw error;
                 }
             }
@@ -132,12 +132,24 @@ export const TrackMutation = extendType({
                 return updatedTrack;
             },
         });
-        // t.nonNull.field("deleteTrack", {
-        //     type: "Track",
-        //     args: {
-        //         externalId: stringArg(),
-        //     },
-        //     resolve(parent, args, context) {
-        // });
+        t.field("deleteTrack", {
+            type: "Track",
+            args: {
+                internalId: intArg(),
+            },
+            async resolve(parent, args, context) {
+                try {
+                    const deletedTrack = await context.prisma.track.delete({
+                        where: {
+                            id: Number(args.internalId),
+                        },
+                    });
+                    console.log("deletedTrack==>", deletedTrack)
+                    return deletedTrack
+                } catch (error) {
+                    throw error;
+                }
+            }
+        });
     },
 });

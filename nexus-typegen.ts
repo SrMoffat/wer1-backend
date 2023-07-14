@@ -54,6 +54,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    deleteTrack: NexusGenRootTypes['Track'] | null; // Track
     updateTrack: NexusGenRootTypes['Track']; // Track!
   }
   Query: { // field return type
@@ -75,6 +76,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    deleteTrack: 'Track'
     updateTrack: 'Track'
   }
   Query: { // field return type name
@@ -96,6 +98,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    deleteTrack: { // args
+      internalId?: number | null; // Int
+    }
     updateTrack: { // args
       creationDate?: string | null; // String
       internalId?: string | null; // String
