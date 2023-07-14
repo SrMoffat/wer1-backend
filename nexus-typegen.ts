@@ -4,7 +4,7 @@
  */
 
 
-
+import type { Context } from "./src/context"
 
 
 
@@ -54,12 +54,11 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
-    createTrack: NexusGenRootTypes['Track']; // Track!
-    deleteTrack: NexusGenRootTypes['Track']; // Track!
     updateTrack: NexusGenRootTypes['Track']; // Track!
   }
   Query: { // field return type
     fetchTracks: NexusGenRootTypes['Track'][]; // [Track!]!
+    searchTrack: NexusGenRootTypes['Track'][]; // [Track!]!
   }
   Track: { // field return type
     creationDate: string; // String!
@@ -75,12 +74,11 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
-    createTrack: 'Track'
-    deleteTrack: 'Track'
     updateTrack: 'Track'
   }
   Query: { // field return type name
     fetchTracks: 'Track'
+    searchTrack: 'Track'
   }
   Track: { // field return type name
     creationDate: 'String'
@@ -96,19 +94,6 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createTrack: { // args
-      creationDate: string; // String!
-      externalId: string; // String!
-      isHit: boolean; // Boolean!
-      isrc: string; // String!
-      length: number; // Int!
-      productionDate: string; // String!
-      title: string; // String!
-      type: string; // String!
-    }
-    deleteTrack: { // args
-      externalId?: string | null; // String
-    }
     updateTrack: { // args
       creationDate?: string | null; // String
       externalId?: string | null; // String
@@ -118,6 +103,11 @@ export interface NexusGenArgTypes {
       productionDate?: string | null; // String
       title?: string | null; // String
       type?: string | null; // String
+    }
+  }
+  Query: {
+    searchTrack: { // args
+      title: string; // String!
     }
   }
 }
@@ -153,7 +143,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

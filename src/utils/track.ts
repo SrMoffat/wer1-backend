@@ -8,6 +8,9 @@ import { NexusGenObjects } from "../../nexus-typegen";
 import { RequestDetails, XMLProperties } from "../../types";
 import { generateOAuthParams, generateSignature, encodeValue } from "./auth";
 
+const MUSIC_STORY_LANGUAGE = "en";
+const MUSIC_STORY_BASE_URL = "https://api.music-story.com";
+
 function extractTrackDetails(details: XMLProperties) {
     const selectKeys = [
         "id",
@@ -20,28 +23,30 @@ function extractTrackDetails(details: XMLProperties) {
         "creation_date"
     ];
     const response = details.root;
-    const data = response.data[0].item;
-    const massaged = data.map(entry => pick(entry, selectKeys));
-    const morphed = massaged.map(entry => ({
-        type: "track",
-        isrc: String(get(entry?.isrc, "[0]")),
-        title: String(get(entry?.title, "[0]")),
-        externalId: String(get(entry?.id, "[0]")),
-        length: String(get(entry?.length, "[0]")),
-        updateDate: String(get(entry?.update_date, "[0]")),
-        creationDate: String(get(entry?.creation_date, "[0]")),
-        productionDate: String(get(entry?.production_date, "[0]")),
-    }));
-    return morphed;
+    const hasResults = get(response.data, "[0]")
+    if (hasResults) {
+        const data = response.data[0].item;
+        const massaged = data.map(entry => pick(entry, selectKeys));
+        const morphed = massaged.map(entry => ({
+            type: "track",
+            isrc: String(get(entry?.isrc, "[0]")),
+            title: String(get(entry?.title, "[0]")),
+            externalId: String(get(entry?.id, "[0]")),
+            length: String(get(entry?.length, "[0]")),
+            updateDate: String(get(entry?.update_date, "[0]")),
+            creationDate: String(get(entry?.creation_date, "[0]")),
+            productionDate: String(get(entry?.production_date, "[0]")),
+        }));
+        return morphed;
+    }
+    return []
 }
 
 export async function fetchTracksByTitle(details: RequestDetails): Promise<NexusGenObjects["Track"][]> {
     try {
-        const {
-            url,
-            method,
-            additionalParams = {}
-        } = details;
+        const method = "GET";
+        const url = `${MUSIC_STORY_BASE_URL}/${MUSIC_STORY_LANGUAGE}/track/search`
+        const { additionalParams } = details;
         const oauthParams = {
             ...generateOAuthParams(),
             ...additionalParams

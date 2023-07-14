@@ -51,9 +51,9 @@ export function generateSignature(method: string, url: string, params: string) {
 };
 export async function makeOAuthRequest(details: RequestDetails) {
     try {
+        const url = ``;
+        const method = "GET";
         const {
-            url,
-            method,
             additionalParams = {}
         } = details;
         const oauthParams = {
