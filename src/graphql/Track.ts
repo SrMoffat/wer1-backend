@@ -119,9 +119,8 @@ export const TrackMutation = extendType({
                     where: {
                         id: Number(args.internalId)
                     },
-                    // @ts-ignore
                     data: {
-                        ...omit(args, "internalId"),
+                        ...omit(args, "internalId") as any,
                     },
                 });
                 return updatedTrack;
