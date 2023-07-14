@@ -40,8 +40,7 @@ function extractTrackDetails(details: XMLProperties) {
         return morphed;
     }
     return []
-}
-
+};
 export async function fetchTracksByTitle(details: RequestDetails): Promise<NexusGenObjects["Track"][]> {
     try {
         const method = "GET";

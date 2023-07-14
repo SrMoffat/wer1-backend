@@ -1,4 +1,4 @@
-import { uniqBy, merge } from "lodash";
+import { uniqBy } from "lodash";
 import { PrismaClient } from "@prisma/client";
 
 import { fetchTracksByTitle } from "./utils";

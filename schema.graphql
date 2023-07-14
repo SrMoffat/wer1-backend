@@ -2,8 +2,15 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: SanitizedUser!
+}
+
 type Mutation {
   deleteTrack(internalId: Int): Track
+  login(email: String!, password: String!): AuthPayload!
+  signup(email: String!, name: String!, password: String!): AuthPayload!
   updateTrack(creationDate: String, internalId: String, isrc: String, length: String, productionDate: String, title: String, type: String, updateDate: String): Track!
 }
 
@@ -11,6 +18,12 @@ type Query {
   fetchTracks: [Track]!
   searchTrackByInternalId(internalId: Int!): Track
   searchTrackByTitle(title: String!): [Track]!
+}
+
+type SanitizedUser {
+  email: String!
+  id: Int!
+  name: String!
 }
 
 type Track {
@@ -22,4 +35,11 @@ type Track {
   title: String!
   type: String!
   updateDate: String!
+}
+
+type User {
+  email: String!
+  id: Int!
+  name: String!
+  password: String!
 }

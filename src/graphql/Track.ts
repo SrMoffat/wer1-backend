@@ -23,6 +23,9 @@ export const TrackQuery = extendType({
             type: "Track",
             async resolve(parent, args, context) {
                 try {
+                    if (!context.userId) {
+                        throw new Error("Invalid credentials");
+                    }
                     return await context.prisma.track.findMany();
                 } catch (error) {
                     throw error;
@@ -36,6 +39,9 @@ export const TrackQuery = extendType({
             },
             async resolve(parent, args, context) {
                 try {
+                    if (!context.userId) {
+                        throw new Error("Invalid credentials");
+                    }
                     // Look for track by title from our DB
                     const existingTracks = await context.prisma.track.findMany({
                         where: {
@@ -86,6 +92,9 @@ export const TrackQuery = extendType({
             },
             async resolve(parent, args, context) {
                 try {
+                    if (!context.userId) {
+                        throw new Error("Invalid credentials");
+                    }
                     const result = await context.prisma.track.findUnique({
                         where: {
                             id: args.internalId,
@@ -115,15 +124,23 @@ export const TrackMutation = extendType({
                 productionDate: stringArg(),
             },
             async resolve(parent, args, context) {
-                const updatedTrack = await context.prisma.track.update({
-                    where: {
-                        id: Number(args.internalId)
-                    },
-                    data: {
-                        ...omit(args, "internalId") as any,
-                    },
-                });
-                return updatedTrack;
+                try {
+                    if (!context.userId) {
+                        throw new Error("Invalid credentials");
+                    }
+                    const updatedTrack = await context.prisma.track.update({
+                        where: {
+                            id: Number(args.internalId)
+                        },
+                        data: {
+                            ...omit(args, "internalId") as any,
+                        },
+                    });
+                    return updatedTrack;
+
+                } catch (error) {
+                    throw error;
+                }
             },
         });
         t.field("deleteTrack", {
@@ -133,6 +150,9 @@ export const TrackMutation = extendType({
             },
             async resolve(parent, args, context) {
                 try {
+                    if (!context.userId) {
+                        throw new Error("Invalid credentials");
+                    }
                     const deletedTrack = await context.prisma.track.delete({
                         where: {
                             id: Number(args.internalId),
