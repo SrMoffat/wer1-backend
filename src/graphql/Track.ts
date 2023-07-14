@@ -144,8 +144,7 @@ export const TrackMutation = extendType({
                             id: Number(args.internalId),
                         },
                     });
-                    console.log("deletedTrack==>", deletedTrack)
-                    return deletedTrack
+                    return deletedTrack;
                 } catch (error) {
                     throw error;
                 }
