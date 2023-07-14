@@ -40,6 +40,12 @@ export interface NexusGenObjects {
     type: string; // String!
     updateDate: string; // String!
   }
+  User: { // root type
+    email: string; // String!
+    id: number; // Int!
+    name: string; // String!
+    password: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -72,6 +78,13 @@ export interface NexusGenFieldTypes {
     type: string; // String!
     updateDate: string; // String!
   }
+  User: { // field return type
+    email: string; // String!
+    id: number; // Int!
+    liked: Array<NexusGenRootTypes['Track'] | null>; // [Track]!
+    name: string; // String!
+    password: string; // String!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
@@ -93,6 +106,13 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     type: 'String'
     updateDate: 'String'
+  }
+  User: { // field return type name
+    email: 'String'
+    id: 'Int'
+    liked: 'Track'
+    name: 'String'
+    password: 'String'
   }
 }
 

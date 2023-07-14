@@ -23,3 +23,11 @@ type Track {
   type: String!
   updateDate: String!
 }
+
+type User {
+  email: String!
+  id: Int!
+  liked: [Track]!
+  name: String!
+  password: String!
+}

@@ -7,25 +7,15 @@ export const User = objectType({
         t.nonNull.string("name");
         t.nonNull.string("email");
         t.nonNull.string("password");
-        t.nonNull.list.nonNull.field("tracks", {
+        t.nonNull.list.field("liked", {
             type: "Track",
             resolve(parent, args, context) {
                 return context.prisma.user.findUnique({
                     where: {
                         id: parent.id
                     }
-                }).tracks()
+                }).liked();
             }
         });
-        t.nonNull.list.nonNull.field("likes", {
-            type: "Like",
-            resolve(parent, args, context) {
-                return context.prisma.user.findUnique({
-                    where: {
-                        id: parent.id
-                    }
-                }).likes()
-            }
-        })
     }
 });
