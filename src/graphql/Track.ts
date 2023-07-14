@@ -1,4 +1,4 @@
-import { uniqBy } from "lodash";
+import { uniqBy, omit } from "lodash";
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 
 import { fetchTracksByTitle } from "../utils";
@@ -119,14 +119,9 @@ export const TrackMutation = extendType({
                     where: {
                         id: Number(args.internalId)
                     },
+                    // @ts-ignore
                     data: {
-                        type: String(args.type),
-                        isrc: String(args.isrc),
-                        title: String(args.title),
-                        length: String(args.length),
-                        updateDate: String(args.updateDate),
-                        creationDate: String(args.creationDate),
-                        productionDate: String(args.productionDate),
+                        ...omit(args, "internalId"),
                     },
                 });
                 return updatedTrack;
