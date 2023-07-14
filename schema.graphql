@@ -3,12 +3,13 @@
 
 
 type Mutation {
-  updateTrack(creationDate: String, externalId: String, isHit: Boolean, isrc: String, length: Int, productionDate: String, title: String, type: String): Track!
+  updateTrack(creationDate: String, internalId: String, isrc: String, length: String, productionDate: String, title: String, type: String, updateDate: String): Track!
 }
 
 type Query {
-  fetchTracks: [Track!]!
-  searchTrack(title: String!): [Track!]!
+  fetchTracks: [Track]!
+  searchTrackByInternalId(internalId: Int!): Track
+  searchTrackByTitle(title: String!): [Track]!
 }
 
 type Track {
