@@ -2,8 +2,8 @@
 WeR1 backend
 
 ## Technology Spec
-- [] Apollo Server (Only backend no client required)
-- [] Use [Music Story API](https://developers.music-story.com/developers)
+- [x] Apollo Server (Only backend no client required)
+- [x] Use [Music Story API](https://developers.music-story.com/developers)
 
 
 ## Implementation Spec
