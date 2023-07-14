@@ -88,11 +88,17 @@ export const TrackQuery = extendType({
                     if (hasExternalResults) {
                         // Add each to DB
                         const dedupedResults = uniqBy(musicStoryResults, "isrc")
-                        console.log("404: No track found in internal DB but in Music Story", dedupedResults)
-                        // Return results from our DB or MS depending on what we decide
+                        for (const track of dedupedResults) {
+                            await context.prisma.track.create({
+                                data: {
+                                    ...track
+                                },
+                            })
+                        }
+                        // Return results from Music Story after insert to DB
+                        return dedupedResults
                     } else {
-                        console.log("404: No track found in internal DB and Music Story")
-                        // Return 404
+                        // Return 404 no results from Music Story and our DB
                         return []
                     }
                 }
