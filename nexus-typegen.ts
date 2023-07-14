@@ -54,11 +54,13 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    deleteTrack: NexusGenRootTypes['Track'] | null; // Track
     updateTrack: NexusGenRootTypes['Track']; // Track!
   }
   Query: { // field return type
-    fetchTracks: NexusGenRootTypes['Track'][]; // [Track!]!
-    searchTrack: NexusGenRootTypes['Track'][]; // [Track!]!
+    fetchTracks: Array<NexusGenRootTypes['Track'] | null>; // [Track]!
+    searchTrackByInternalId: NexusGenRootTypes['Track'] | null; // Track
+    searchTrackByTitle: Array<NexusGenRootTypes['Track'] | null>; // [Track]!
   }
   Track: { // field return type
     creationDate: string; // String!
@@ -74,11 +76,13 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    deleteTrack: 'Track'
     updateTrack: 'Track'
   }
   Query: { // field return type name
     fetchTracks: 'Track'
-    searchTrack: 'Track'
+    searchTrackByInternalId: 'Track'
+    searchTrackByTitle: 'Track'
   }
   Track: { // field return type name
     creationDate: 'String'
@@ -94,19 +98,25 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    deleteTrack: { // args
+      internalId?: number | null; // Int
+    }
     updateTrack: { // args
       creationDate?: string | null; // String
-      externalId?: string | null; // String
-      isHit?: boolean | null; // Boolean
+      internalId?: string | null; // String
       isrc?: string | null; // String
-      length?: number | null; // Int
+      length?: string | null; // String
       productionDate?: string | null; // String
       title?: string | null; // String
       type?: string | null; // String
+      updateDate?: string | null; // String
     }
   }
   Query: {
-    searchTrack: { // args
+    searchTrackByInternalId: { // args
+      internalId: number; // Int!
+    }
+    searchTrackByTitle: { // args
       title: string; // String!
     }
   }
