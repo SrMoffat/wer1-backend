@@ -13,7 +13,6 @@ export const AuthPayload = objectType({
         })
     },
 });
-
 export const AuthMutation = extendType({
     type: "Mutation",
     definition(t) {

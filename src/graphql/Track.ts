@@ -1,182 +1,124 @@
-import { extendType, nonNull, objectType, stringArg, intArg, inputObjectType, enumType, arg, list } from "nexus";
-import { Prisma } from "@prisma/client";
+import { booleanArg, extendType, nonNull, objectType, stringArg, intArg } from "nexus";
 
-export const Sort = enumType({
-    name: "Sort",
-    members: ["asc", "desc"],
-});
+import { NexusGenObjects } from "../../nexus-typegen";
 
-export const TrackOrderByInput = inputObjectType({
-    name: "TrackOrderByInput",
-    definition(t) {
-        t.field("title", { type: Sort });
-        t.field("length", { type: Sort });
-        t.field("type", { type: Sort });
-        t.field("createdAt", { type: Sort });
-        t.field("productionDate", { type: Sort });
-        t.field("creationDate", { type: Sort });
+let tracks: NexusGenObjects["Track"][] = [
+    {
+        externalId: "1",
+        title: "I'm Only Human",
+        type: "Pop",
+        length: "180",
+        isrc: "ISRC4535543",
+        creationDate: "2015-8-10T00:00:00",
+        productionDate: "2015-8-10T00:00:00",
+        updateDate: "2095-8-10T00:00:00",
     },
-});
-
-export const TrackFeed = objectType({
-    name: "TrackFeed",
-    definition(t) {
-        t.nonNull.list.nonNull.field("tracks", { type: "Track" });
-        t.nonNull.int("count");
-        t.id("id");
+    {
+        externalId: "2",
+        title: "I'm Only Alien",
+        type: "Rock",
+        length: "190",
+        isrc: "ISRC457575543",
+        creationDate: "2095-8-10T00:00:00",
+        productionDate: "2095-8-10T00:00:00",
+        updateDate: "2095-8-10T00:00:00",
     },
-});
-
+    {
+        externalId: "3",
+        title: "I'm Only",
+        type: "Hip Hop",
+        length: "210",
+        isrc: "ISRC457575543",
+        creationDate: "2095-8-10T00:00:00",
+        productionDate: "2095-8-10T00:00:00",
+        updateDate: "2095-8-10T00:00:00",
+    }
+];
 export const Track = objectType({
     name: "Track",
     definition(t) {
-        t.nonNull.int("id");
-        t.nonNull.string("title");
-        t.nonNull.int("length");
+        t.nonNull.string("externalId");
         t.nonNull.string("isrc");
-        t.nonNull.string("productionDate");
-        t.nonNull.string("creationDate");
-        t.nonNull.dateTime("createdAt");
+        t.nonNull.string("title");
         t.nonNull.string("type");
-        t.field("addedBy", {
-            type: "User",
-            resolve(parent, args, context) {
-                return context.prisma.track.findUnique({
-                    where: {
-                        id: parent.id
-                    }
-                }).addedBy()
-            }
-        });
-        t.nonNull.list.nonNull.field("likes", {
-            type: "User",
-            resolve(parent, args, context) {
-                return context.prisma.track.findUnique({
-                    where: {
-                        id: parent.id
-                    }
-                }).likes()
-            }
-        })
+        t.nonNull.string("length");
+        t.nonNull.string("creationDate");
+        t.nonNull.string("productionDate");
+        t.nonNull.string("updateDate");
     },
 });
-
 export const TrackQuery = extendType({
     type: "Query",
     definition(t) {
         t.nonNull.list.nonNull.field("fetchTracks", {
-            type: "TrackFeed",
-            args: {
-                filter: stringArg(),
-                skip: intArg(),
-                take: intArg(),
-                orderBy: arg({ type: list(nonNull(TrackOrderByInput)) })
-            },
-            async resolve(parent, args, context, info) {
-                const where = args.filter
-                    ? { OR: [{ title: { contains: args.filter } }, { type: { contains: args.filter } }] }
-                    : {}
-                const tracks = await context.prisma.track.findMany({
-                    where,
-                    skip: args?.skip as number | undefined,
-                    take: args?.take as number | undefined,
-                    orderBy: args?.orderBy as
-                        | Prisma.Enumerable<Prisma.TrackOrderByWithRelationInput>
-                        | undefined,
-                });
-
-                const count = await context.prisma.track.count({ where });
-                const id = `main-feed:${JSON.stringify(args)}`;
-
-                return {
-                    tracks,
-                    count,
-                    id,
-                }
-            },
-        });
-        t.field("getTrack", {
             type: "Track",
-            args: {
-                id: nonNull(intArg()),
-            },
-            resolve(parent, args, context, info) {
-                return context.prisma.track.findUnique({
-                    where: {
-                        id: args.id
-                    }
-                });
-            },
-        });
+            resolve(parent, args, context) {
+                return tracks;
+            }
+        })
     },
 });
-
 export const TrackMutation = extendType({
     type: "Mutation",
     definition(t) {
         t.nonNull.field("createTrack", {
             type: "Track",
             args: {
+                externalId: nonNull(stringArg()),
                 title: nonNull(stringArg()),
+                type: nonNull(stringArg()),
                 isrc: nonNull(stringArg()),
                 length: nonNull(intArg()),
                 productionDate: nonNull(stringArg()),
                 creationDate: nonNull(stringArg()),
-                type: nonNull(stringArg()),
+                isHit: nonNull(booleanArg())
             },
-            async resolve(parent, args, context) {
-                const { userId } = context;
-                if (!userId) {
-                    throw new Error("Invalid credentials");
+            resolve(parent, args, context) {
+                let idCount = tracks.length + 1;
+                const track = {
+                    internalId: idCount,
+                    id: String(idCount),
+                    ...args
                 }
-                const track = await context.prisma.track.create({
-                    data: {
-                        ...args,
-                        addedBy: {
-                            connect: {
-                                id: userId
-                            }
-                        }
-                    }
-                });
-                console.log(track)
+                tracks.push(track)
                 return track;
-            },
+            }
         });
         t.nonNull.field("updateTrack", {
             type: "Track",
             args: {
+                externalId: stringArg(),
+                title: stringArg(),
                 type: stringArg(),
                 isrc: stringArg(),
-                title: stringArg(),
-                length: stringArg(),
-                id: nonNull(intArg()),
-                creationDate: stringArg(),
+                length: intArg(),
                 productionDate: stringArg(),
+                creationDate: stringArg(),
+                isHit: booleanArg()
             },
             resolve(parent, args, context) {
-                const { title, isrc, length, productionDate, creationDate, type } = args;
-                return context.prisma.track.update({
-                    where: {
-                        id: args.id
-                    },
-                    data: {
-                        // ...args,
-                    }
-                });
+                const remainingTracks = tracks.filter(track => track.externalId !== args.externalId);
+                const candidateTrack = tracks.filter(track => track.externalId === args.externalId);
+                tracks = [{
+                    ...candidateTrack[0],
+                    ...args,
+                }, ...remainingTracks] as NexusGenObjects["Track"][]
+                return {
+                    ...candidateTrack[0],
+                    ...args,
+                }
             },
         });
         t.nonNull.field("deleteTrack", {
             type: "Track",
             args: {
-                id: nonNull(intArg()),
+                externalId: stringArg(),
             },
             resolve(parent, args, context) {
-                return context.prisma.track.delete({
-                    where: {
-                        id: args.id
-                    }
-                });
+                const remainingTracks = tracks.filter(track => track.externalId !== args.externalId);
+                const candidateTrack = tracks.filter(track => track.externalId === args.externalId);
+                tracks = remainingTracks as NexusGenObjects["Track"][]
+                return candidateTrack
             },
         });
     },

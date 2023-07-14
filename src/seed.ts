@@ -1,26 +1,33 @@
 import { PrismaClient } from "@prisma/client";
 
+import { fetchTracksByTitle } from "./utils";
+
 const prisma = new PrismaClient();
 
-async function main() {
-    const newLink = await prisma.track.create({
-        data: {
-            creationDate: `${new Date()}`,
-            productionDate: `${new Date()}`,
-            isrc: `${Math.floor(Math.random() * 10)}`,
-            length: 3444,
-            type: 'Fullstack tutorial for GraphQL',
-            title: 'www.howtographql.com',
-        },
-    })
-    const allTracks = await prisma.track.findMany();
-    console.log(allTracks);
-}
+const MUSIC_STORY_LANGUAGE = "en";
+const MUSIC_STORY_BASE_URL = "https://api.music-story.com";
 
-main()
-    .catch((e) => {
-        throw e;
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+async function seedDatabase() {
+    try {
+        const additionalParams = {
+            title: "Trance"
+        };
+        const url = `${MUSIC_STORY_BASE_URL}/${MUSIC_STORY_LANGUAGE}/track/search`;
+        const results = await fetchTracksByTitle({
+            method: "GET",
+            url,
+            additionalParams
+        })
+        for (const track of results){
+            await prisma.track.create({
+               data: {
+                ...track
+               },
+           })
+        }
+    } catch (error) {
+        console.error("Erroor==>", error);
+    }
+};
+
+seedDatabase();

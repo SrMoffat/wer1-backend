@@ -1,5 +1,5 @@
-import { extendType, intArg, nonNull, objectType } from "nexus";
 import { User } from "@prisma/client";
+import { extendType, intArg, nonNull, objectType } from "nexus";
 
 export const Like = objectType({
     name: "Like",
@@ -8,7 +8,6 @@ export const Like = objectType({
         t.nonNull.field("user", { type: "User" });
     },
 });
-
 export const LikeMutation = extendType({
     type: "Mutation",
     definition(t) {
