@@ -16,8 +16,10 @@ model Track {
   isrc                  String
   title                 String
   length                String
+  postedBy              User?    @relation(fields: [postedById], references: [id])
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+  postedById            Int?
   updateDate            String
   externalId            String
   creationDate          String
@@ -29,6 +31,7 @@ model User {
   name                  String
   email                 String   @unique
   password              String
+  liked                 Track[]
 }
 
 
