@@ -1,17 +1,15 @@
-// tests/Post.test.ts
 import { faker } from "@faker-js/faker";
 import { createTestContext } from "./__helpers";
 
 import { SEED_USERS } from "../src/constants";
 
 const candidateUser = SEED_USERS[0];
-
-const duplicateEmailError = "Unique constraint failed on the fields: (`email`)";
 const invalidAuthError = "Invalid credentials";
-
+const duplicateEmailError = "Unique constraint failed on the fields: (`email`)";
 
 const ctx = createTestContext();
-const signupMutation = `
+
+export const signupMutation = `
     mutation signupMutation($email: String!, $password: String!, $name: String!) {
         signup(email: $email, password: $password, name: $name) {
         token
@@ -23,7 +21,7 @@ const signupMutation = `
         }
     }
 `;
-const loginMutation = `
+export const loginMutation = `
     mutation loginMutation($email: String!, $password: String!) {
         login(email: $email, password: $password) {
         token
@@ -71,7 +69,7 @@ it('signupMutation returns credentials', async () => {
     expect(user.email).toBe(userDetails.email);
     expect(user.name).toBe(userDetails.name);
 });
-it('loginMutation returns user details', async () => {
+it('loginMutation errors when user does not exists', async () => {
     const userDetails = {
         email: faker.internet.email(),
         password: faker.internet.password(),
@@ -84,5 +82,23 @@ it('loginMutation returns user details', async () => {
     expect(hasErrors).toBeTruthy();
     const errorMessage = hasErrors && hasErrors[0]?.message;
     expect(errorMessage).toContain(invalidAuthError);
+});
+it('loginMutation returns credentials', async () => {
+    // Test assumed seed script (src/seed.ts) was run
+    const userDetails = {
+        email: candidateUser.email,
+        password: candidateUser.password,
+    };
+    const loginResults = await ctx.client.executeOperation({
+        query: loginMutation,
+        variables: userDetails
+    });
+    const hasData = loginResults.data;
+    expect(hasData).toBeTruthy();
+    const response = hasData && hasData?.login;
+    const token = response.token;
+    expect(token).toBeTruthy();
+    const user = response.user;
+    expect(user.email).toBe(userDetails.email);
 });
 

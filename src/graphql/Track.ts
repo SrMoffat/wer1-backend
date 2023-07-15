@@ -23,7 +23,6 @@ export const TrackQuery = extendType({
             type: "Track",
             async resolve(parent, args, context) {
                 try {
-                    console.log("Concealmenentntntnt===>")
                     if (!context.userId) {
                         throw new Error("Invalid credentials");
                     }

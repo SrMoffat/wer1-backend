@@ -33,7 +33,7 @@ function graphqlTestContext() {
             return testServer;
         },
         async after() {
-            testServer.stop();
+            // TODO: Cleanup test DB
         },
     };
 };

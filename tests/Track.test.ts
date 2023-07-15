@@ -1,5 +1,9 @@
-// tests/Post.test.ts
 import { createTestContext } from './__helpers';
+
+import { SEED_USERS } from "../src/constants";
+import { loginMutation } from './Auth.test';
+
+const candidateUser = SEED_USERS[0];
 
 const ctx = createTestContext();
 const authErrorMessage = "Invalid credentials";
@@ -16,22 +20,36 @@ const fetchTracksQuery = `
       }
     }
 `;
-it.skip('fetchTracks errors without auth headers', async () => {
+it('fetchTracks errors without auth headers', async () => {
   const trackResults = await ctx.client.executeOperation({
     query: fetchTracksQuery
   });
   const hasErrors = trackResults.errors;
-  const errorMessage = hasErrors && hasErrors[0]?.message;
   expect(hasErrors).toBeTruthy();
+  const errorMessage = hasErrors && hasErrors[0]?.message;
   expect(errorMessage).toContain(authErrorMessage);
 });
-it.skip('fetchTracks returns with auth headers', async () => {
-  const trackResults = await ctx.client.executeOperation({
-    query: fetchTracksQuery
+it('fetchTracks returns with auth headers', async () => {
+  const userDetails = {
+    email: candidateUser.email,
+    password: candidateUser.password,
+  };
+  const loginResults = await ctx.client.executeOperation({
+    query: loginMutation,
+    variables: userDetails
   });
-  console.log("Track Results", trackResults);
-  // const hasErrors = trackResults.errors;
-  // const errorMessage = hasErrors && hasErrors[0]?.message;
-  // expect(hasErrors).toBeTruthy();
-  // expect(errorMessage).toContain(authErrorMessage);
+  const hasData = loginResults.data;
+  expect(hasData).toBeTruthy();
+  const response = hasData && hasData?.login;
+  const token = response.token;
+  expect(token).toBeTruthy();
+  const trackResults = await ctx.client.executeOperation(
+    { query: fetchTracksQuery },
+    // @ts-ignore
+    { req: { headers: { authorization: `Bearer ${token}` } } }
+  );
+  const hasResults = trackResults.data;
+  expect(hasResults).toBeTruthy();
+  const trackResponse = hasResults && hasResults?.fetchTracks;
+  expect(trackResponse).toBeInstanceOf(Array);
 });
