@@ -36,14 +36,14 @@ export const AuthMutation = extendType({
                     where: { email: args.email },
                 });
                 if (!user) {
-                    throw new Error("No such user found");
+                    throw new Error("Invalid credentials");
                 }
                 const valid = await bcrypt.compare(
                     args.password,
                     user.password,
                 );
                 if (!valid) {
-                    throw new Error("Invalid password");
+                    throw new Error("Invalid credentials");
                 }
                 const token = jwt.sign({ userId: user.id }, APP_SECRET_KEY);
                 return {
@@ -60,6 +60,7 @@ export const AuthMutation = extendType({
                 name: nonNull(stringArg()),
             },
             async resolve(parent, args, context) {
+                // TODO: Add inout validation e.g. for email and password use Yup
                 const { email, name } = args;
                 const password = await bcrypt.hash(args.password, 10);
                 const user = await context.prisma.user.create({

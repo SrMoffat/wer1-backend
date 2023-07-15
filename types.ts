@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 export interface RequestDetails {
     method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
     url?: string;
@@ -37,4 +38,9 @@ export interface XMLProperties {
         currentPage: string[];
         data: MusicStoryTrack[];
     }
+};
+
+export interface AppContext {
+    prisma: PrismaClient;
+    userId?: number;
 };
