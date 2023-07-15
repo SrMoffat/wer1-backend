@@ -8,9 +8,11 @@ type TestContext = {
     client: ApolloServer;
 };
 
-export function createTestContext(): TestContext {
+type TestContextArgs = Object;
+
+export function createTestContext(args?: TestContextArgs): TestContext {
     let ctx = {} as TestContext;
-    const graphqlCtx = graphqlTestContext();
+    const graphqlCtx = graphqlTestContext(args);
     beforeEach(async () => {
         const client = await graphqlCtx.before();
         Object.assign(ctx, {
@@ -22,13 +24,16 @@ export function createTestContext(): TestContext {
     });
     return ctx;
 };
-function graphqlTestContext() {
+function graphqlTestContext(args?: TestContextArgs) {
     let testServer: ApolloServer
     return {
         async before() {
             testServer = new ApolloServer({
                 schema,
-                context,
+                context: {
+                    ...context,
+                    ...args
+                },
             });
             return testServer;
         },
