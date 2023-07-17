@@ -1,9 +1,9 @@
 import { ApolloServer } from "apollo-server";
 import { PrismaClient } from "@prisma/client";
 export interface RequestDetails {
-    method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
     url?: string;
     additionalParams: Object;
+    method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 };
 export interface AuthTokenPayload {
     userId: number;
@@ -32,9 +32,9 @@ export interface MusicStoryTrack {
 };
 export interface XMLProperties {
     root: {
-        version: string[];
         code: string[];
         count: string[];
+        version: string[];
         pageCount: string[];
         currentPage: string[];
         data: MusicStoryTrack[];
@@ -42,8 +42,8 @@ export interface XMLProperties {
 };
 
 export interface AppContext {
-    prisma: PrismaClient;
     userId?: number;
+    prisma: PrismaClient;
 };
 export type TestContext = {
     client: ApolloServer;

@@ -1,21 +1,42 @@
 import { uniqBy, omit } from "lodash";
+import { GraphQLError } from 'graphql';
+
 import { fetchTracksByTitle } from "../../utils";
+import { INVALID_AUTH_ERROR, SERVER_ERROR } from "../../constants";
 
 export const fetchTracksResolver = async (parent: any, args: any, context: any) => {
     try {
         if (!context.userId) {
-            throw new Error("Invalid credentials");
-        }
+            throw new GraphQLError(INVALID_AUTH_ERROR, {
+                // @ts-ignore
+                extensions: {
+                    code: 'INVALID_CREDENTIALS',
+                    statusCode: 400
+                },
+            });
+        };
         return await context.prisma.track.findMany();
     } catch (error) {
-        throw error;
-    }
+        throw new GraphQLError(SERVER_ERROR, {
+            // @ts-ignore
+            extensions: {
+                code: 'SERVER_ERROR',
+                statusCode: 500
+            },
+        });
+    };
 };
 export const searchTrackByTitleResolver = async (parent: any, args: any, context: any) => {
     try {
         if (!context.userId) {
-            throw new Error("Invalid credentials");
-        }
+            throw new GraphQLError(INVALID_AUTH_ERROR, {
+                // @ts-ignore
+                extensions: {
+                    code: 'INVALID_CREDENTIALS',
+                    statusCode: 400
+                },
+            });
+        };
         // Look for track by title from our DB
         const existingTracks = await context.prisma.track.findMany({
             where: {
@@ -35,7 +56,7 @@ export const searchTrackByTitleResolver = async (parent: any, args: any, context
             };
             const musicStoryResults = await fetchTracksByTitle({
                 additionalParams
-            })
+            });
             const hasExternalResults = musicStoryResults.length;
             if (hasExternalResults) {
                 // Add each to DB
@@ -45,39 +66,62 @@ export const searchTrackByTitleResolver = async (parent: any, args: any, context
                         data: {
                             ...track
                         },
-                    })
-                }
+                    });
+                };
                 // Return results from Music Story after insert to DB
-                return dedupedResults
+                return dedupedResults;
             } else {
                 // Return 404 no results from Music Story and our DB
-                return []
-            }
-        }
+                return [];
+            };
+        };
     } catch (error) {
-        throw error;
-    }
-
+        throw new GraphQLError(SERVER_ERROR, {
+            // @ts-ignore
+            extensions: {
+                code: 'SERVER_ERROR',
+                statusCode: 500
+            },
+        });
+    };
 };
 export const searchTrackByInternalIdResolver = async (parent: any, args: any, context: any) => {
     try {
         if (!context.userId) {
-            throw new Error("Invalid credentials");
-        }
+            throw new GraphQLError(INVALID_AUTH_ERROR, {
+                // @ts-ignore
+                extensions: {
+                    code: 'INVALID_CREDENTIALS',
+                    statusCode: 400
+                },
+            });
+        };
         const result = await context.prisma.track.findUnique({
             where: {
                 id: args.internalId,
             }
-        })
-        return result
+        });
+        return result;
     } catch (error) {
-        throw error;
+        throw new GraphQLError(SERVER_ERROR, {
+            // @ts-ignore
+            extensions: {
+                code: 'SERVER_ERROR',
+                statusCode: 500
+            },
+        });
     }
 };
 export const updateTrackResolver = async (parent: any, args: any, context: any) => {
     try {
         if (!context.userId) {
-            throw new Error("Invalid credentials");
+            throw new GraphQLError(INVALID_AUTH_ERROR, {
+                // @ts-ignore
+                extensions: {
+                    code: 'INVALID_CREDENTIALS',
+                    statusCode: 400
+                },
+            });
         };
         const updatedTrack = await context.prisma.track.update({
             where: {
@@ -89,7 +133,13 @@ export const updateTrackResolver = async (parent: any, args: any, context: any) 
         });
         return updatedTrack;
     } catch (error) {
-        throw error;
+        throw new GraphQLError(SERVER_ERROR, {
+            // @ts-ignore
+            extensions: {
+                code: 'SERVER_ERROR',
+                statusCode: 500
+            },
+        });
     }
 };
 export const deleteTrackResolver = async (parent: any, args: any, context: any) => {
@@ -104,6 +154,12 @@ export const deleteTrackResolver = async (parent: any, args: any, context: any) 
         });
         return deletedTrack;
     } catch (error) {
-        throw error;
+        throw new GraphQLError(SERVER_ERROR, {
+            // @ts-ignore
+            extensions: {
+                code: 'SERVER_ERROR',
+                statusCode: 500
+            },
+        });
     }
 };

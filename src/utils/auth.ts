@@ -6,23 +6,25 @@ import crypto from "crypto";
 import querystring from "querystring";
 
 import { RequestDetails, AuthTokenPayload } from "../../types";
-
-export const oauthVersion = '1.0';
-export const oauthSignatureMethod = 'HMAC-SHA1';
-export const APP_SECRET_KEY = process.env.APP_SECRET_KEY || "W3R1-b4ck3nd-s3rv3r";
-export const consumerKey = process.env.MUSIC_STORY_CONSUMER_KEY || '';
-export const consumerSecret = process.env.MUSIC_STORY_CONSUMER_SECRET || '';
-export const accessToken = process.env.MUSIC_STORY_ACCESS_TOKEN || '';
-export const accessTokenSecret = process.env.MUSIC_STORY_ACCESS_TOKEN_SECRET || '';
+import {
+    OATH_VERSION,
+    APP_SECRET_KEY,
+    OATH_SIGNATURE_METHOD,
+    MUSIC_STORY_CONSUMER_KEY,
+    MUSIC_STORY_ACCESS_TOKEN,
+    MUSIC_STORY_CONSUMER_SECRET,
+    MUSIC_STORY_ACCESS_TOKEN_SECRET,
+    NONCE_CHARACTER_SET
+} from "../constants";
 
 export function generateOAuthParams() {
     const oauthParams = {
-        oauth_consumer_key: consumerKey,
-        oauth_token: accessToken,
-        oauth_signature_method: oauthSignatureMethod,
+        oauth_consumer_key: MUSIC_STORY_CONSUMER_KEY,
+        oauth_token: MUSIC_STORY_ACCESS_TOKEN,
+        oauth_signature_method: OATH_SIGNATURE_METHOD,
         oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
         oauth_nonce: generateNonce(),
-        oauth_version: oauthVersion,
+        oauth_version: OATH_VERSION,
     };
     return oauthParams;
 };
@@ -34,8 +36,8 @@ export function decodeAuthHeader(authHeader: string): AuthTokenPayload {
     return jwt.verify(token, APP_SECRET_KEY) as AuthTokenPayload;
 };
 export function generateNonce(length = 32) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let nonce = '';
+    const chars = NONCE_CHARACTER_SET;
+    let nonce = "";
     for (let i = 0; i < length; i++) {
         nonce += chars.charAt(Math.floor(Math.random() * chars.length));
     }
@@ -46,12 +48,12 @@ export function encodeValue(value: string | number | boolean) {
 };
 export function generateSignature(method: string, url: string, params: string) {
     const baseString = `${method.toUpperCase()}&${encodeValue(url)}&${encodeValue(params)}`;
-    const signingKey = `${encodeValue(consumerSecret)}&${encodeValue(accessTokenSecret)}`;
+    const signingKey = `${encodeValue(MUSIC_STORY_CONSUMER_SECRET)}&${encodeValue(MUSIC_STORY_ACCESS_TOKEN_SECRET)}`;
     return crypto.createHmac('sha1', signingKey).update(baseString).digest('base64');
 };
 export async function makeOAuthRequest(details: RequestDetails) {
     try {
-        const url = ``;
+        const url = "";
         const method = "GET";
         const {
             additionalParams = {}
@@ -71,7 +73,7 @@ export async function makeOAuthRequest(details: RequestDetails) {
         const authHeader = `OAuth ${orderedParams.map(key => `${encodeValue(key)}="${encodeValue(oauthParams[key])}"`).join(', ')}, oauth_signature="${encodeValue(signature)}"`;
         const headers = {
             Authorization: authHeader,
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         };
         const response = await axios.request({
             method,

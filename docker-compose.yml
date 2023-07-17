@@ -1,6 +1,5 @@
 version: '3.8'
 services:
-  # Docker connection string for local machine: postgres://postgres:postgres@localhost:5432/
   postgres:
     image: postgres
     restart: always
