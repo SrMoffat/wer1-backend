@@ -63,6 +63,16 @@ export const GRAPHQL_TO_HTTP_ERROR_CODES = {
         statusCode: 500,
     }
 };
+export const SELECT_KEYS_FROM_MUSIC_STORY = [
+    "id",
+    "id_record",
+    "title",
+    "length",
+    "isrc",
+    "production_date",
+    "update_date",
+    "creation_date"
+]
 export const SEED_USERS = [
     {
         name: "Test User 1",

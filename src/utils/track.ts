@@ -7,25 +7,15 @@ import { parseStringPromise } from "xml2js";
 
 import { NexusGenObjects } from "../../nexus-typegen";
 import { RequestDetails, XMLProperties } from "../../types";
-import { MUSIC_STORY_BASE_URL, MUSIC_STORY_LANGUAGE } from "../constants";
 import { generateOAuthParams, generateSignature, encodeValue } from "./auth";
+import { MUSIC_STORY_BASE_URL, MUSIC_STORY_LANGUAGE, SELECT_KEYS_FROM_MUSIC_STORY } from "../constants";
 
 function extractTrackDetails(details: XMLProperties) {
-    const selectKeys = [
-        "id",
-        "id_record",
-        "title",
-        "length",
-        "isrc",
-        "production_date",
-        "update_date",
-        "creation_date"
-    ];
     const response = details.root;
     const hasResults = get(response.data, "[0]")
     if (hasResults) {
         const data = response.data[0].item;
-        const massaged = data.map(entry => pick(entry, selectKeys));
+        const massaged = data.map(entry => pick(entry, SELECT_KEYS_FROM_MUSIC_STORY));
         const morphed = massaged.map(entry => ({
             type: "track",
             isrc: String(get(entry?.isrc, "[0]")),
