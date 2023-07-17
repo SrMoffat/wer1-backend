@@ -1,6 +1,8 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 
+import {ApolloError } from "apollo-server";
+
 import { GraphQLError } from 'graphql';
 
 import { APP_SECRET_KEY } from "../../constants";

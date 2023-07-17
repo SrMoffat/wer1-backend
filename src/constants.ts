@@ -12,6 +12,11 @@ export const MUSIC_STORY_ACCESS_TOKEN = process.env.MUSIC_STORY_ACCESS_TOKEN || 
 export const MUSIC_STORY_CONSUMER_SECRET = process.env.MUSIC_STORY_CONSUMER_SECRET || '';
 export const MUSIC_STORY_ACCESS_TOKEN_SECRET = process.env.MUSIC_STORY_ACCESS_TOKEN_SECRET || '';
 export const NONCE_CHARACTER_SET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+export const GRAPHQL_TO_HTTP_ERROR_CODES = {
+    BAD_USER_INPUT: {
+        statusCode: 400,
+    }
+};
 export const SEED_USERS = [
     {
         name: "Test User 1",
