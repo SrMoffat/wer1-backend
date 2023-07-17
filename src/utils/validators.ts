@@ -2,27 +2,27 @@
 // Even so validation redundancy is not a bad idea
 import * as yup from "yup";
 
+import { AUTH_VALIDATION_ERRORS, PASSWORD_REGEX } from "../constants";
+
+const { name, email, password } = AUTH_VALIDATION_ERRORS;
+
 const commonAuthFields = {
     name: yup.string()
-        .required("Name is a required field.")
-        .min(2, "Name must be more than 2 characters."),
+        .required(name.required)
+        .min(2, name.invalid),
     email: yup.string()
-        .required("Email is a required field.")
-        .email("Invalid email provided."),
+        .required(email.required)
+        .email(email.invalid),
 };
 const userSignUpSchema = yup.object({
-   ...commonAuthFields,
+    ...commonAuthFields,
     password: yup.string()
-        .required("Password is a required field")
+        .required(password.required)
         .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-            "Password have 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
+            PASSWORD_REGEX,
+            password.invalid
         ),
 });
-const userLoginSchema = yup.object({
-   ...commonAuthFields
-});
 export {
-    userSignUpSchema,
-    userLoginSchema
+    userSignUpSchema
 };
