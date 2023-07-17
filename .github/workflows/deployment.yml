@@ -19,5 +19,6 @@ jobs:
           npm i
           fi
       - run: echo "TODO: Setup Test Database"
+      - run: echo "TODO: Setup Prisma"
       - run: echo "TODO: Seed Test Database"
       - run: echo "TODO: Run Tests"
