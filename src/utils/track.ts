@@ -7,34 +7,26 @@ import { parseStringPromise } from "xml2js";
 
 import { NexusGenObjects } from "../../nexus-typegen";
 import { RequestDetails, XMLProperties } from "../../types";
-import { MUSIC_STORY_BASE_URL, MUSIC_STORY_LANGUAGE } from "../constants";
 import { generateOAuthParams, generateSignature, encodeValue } from "./auth";
+import { MUSIC_STORY_BASE_URL, MUSIC_STORY_LANGUAGE, SELECT_KEYS_FROM_MUSIC_STORY } from "../constants";
+
+const firstIndex = "[0]";
 
 function extractTrackDetails(details: XMLProperties) {
-    const selectKeys = [
-        "id",
-        "id_record",
-        "title",
-        "length",
-        "isrc",
-        "production_date",
-        "update_date",
-        "creation_date"
-    ];
     const response = details.root;
-    const hasResults = get(response.data, "[0]")
+    const hasResults = get(response.data, firstIndex)
     if (hasResults) {
         const data = response.data[0].item;
-        const massaged = data.map(entry => pick(entry, selectKeys));
+        const massaged = data.map(entry => pick(entry, SELECT_KEYS_FROM_MUSIC_STORY));
         const morphed = massaged.map(entry => ({
             type: "track",
-            isrc: String(get(entry?.isrc, "[0]")),
-            title: String(get(entry?.title, "[0]")),
-            externalId: String(get(entry?.id, "[0]")),
-            length: String(get(entry?.length, "[0]")),
-            updateDate: String(get(entry?.update_date, "[0]")),
-            creationDate: String(get(entry?.creation_date, "[0]")),
-            productionDate: String(get(entry?.production_date, "[0]")),
+            isrc: String(get(entry?.isrc, firstIndex)),
+            title: String(get(entry?.title, firstIndex)),
+            externalId: String(get(entry?.id, firstIndex)),
+            length: String(get(entry?.length, firstIndex)),
+            updateDate: String(get(entry?.update_date, firstIndex)),
+            creationDate: String(get(entry?.creation_date, firstIndex)),
+            productionDate: String(get(entry?.production_date, firstIndex)),
         }));
         return morphed;
     }

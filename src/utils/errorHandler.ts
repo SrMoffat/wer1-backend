@@ -18,14 +18,39 @@ export const formatError = (formattedError: GraphQLError) => {
                 ...GRAPHQL_TO_HTTP_ERROR_CODES.GRAPHQL_PARSE_FAILED,
                 ...commonErrorDetails,
             };
+        case "GRAPHQL_VALIDATION_FAILED":
+            return {
+                ...GRAPHQL_TO_HTTP_ERROR_CODES.GRAPHQL_VALIDATION_FAILED,
+                ...commonErrorDetails,
+            };
         case "BAD_REQUEST":
             return {
                 ...GRAPHQL_TO_HTTP_ERROR_CODES.BAD_REQUEST,
                 ...commonErrorDetails,
             };
+        case "UNAUTHENTICATED":
+            return {
+                ...GRAPHQL_TO_HTTP_ERROR_CODES.UNAUTHENTICATED,
+                ...commonErrorDetails,
+            };
+        case "FORBIDDEN":
+            return {
+                ...GRAPHQL_TO_HTTP_ERROR_CODES.FORBIDDEN,
+                ...commonErrorDetails,
+            };
+        case "INVALID_CREDENTIALS":
+            return {
+                ...GRAPHQL_TO_HTTP_ERROR_CODES.INVALID_CREDENTIALS,
+                ...commonErrorDetails,
+            };
         case "INTERNAL_SERVER_ERROR":
             return {
                 ...GRAPHQL_TO_HTTP_ERROR_CODES.INTERNAL_SERVER_ERROR,
+                ...commonErrorDetails,
+            };
+        case "USER_NOT_FOUND":
+            return {
+                ...GRAPHQL_TO_HTTP_ERROR_CODES.USER_NOT_FOUND,
                 ...commonErrorDetails,
             };
         default:

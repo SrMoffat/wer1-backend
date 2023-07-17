@@ -37,13 +37,42 @@ export const GRAPHQL_TO_HTTP_ERROR_CODES = {
     GRAPHQL_PARSE_FAILED: {
         statusCode: 422,
     },
+    GRAPHQL_VALIDATION_FAILED: {
+        statusCode: 422,
+    },
     BAD_REQUEST: {
         statusCode: 400,
+    },
+    UNAUTHENTICATED: {
+        statusCode: 401,
+        messge: INVALID_AUTH_ERROR
+    },
+    FORBIDDEN: {
+        statusCode: 403,
+        message: INVALID_AUTH_ERROR
+    },
+    INVALID_CREDENTIALS: {
+        statusCode: 403,
+        message: INVALID_AUTH_ERROR
+    },
+    USER_NOT_FOUND: {
+        statusCode: 404,
+        message: INVALID_AUTH_ERROR
     },
     INTERNAL_SERVER_ERROR: {
         statusCode: 500,
     }
 };
+export const SELECT_KEYS_FROM_MUSIC_STORY = [
+    "id",
+    "id_record",
+    "title",
+    "length",
+    "isrc",
+    "production_date",
+    "update_date",
+    "creation_date"
+]
 export const SEED_USERS = [
     {
         name: "Test User 1",
