@@ -1,3 +1,4 @@
+import { ApolloServer } from "apollo-server";
 import { PrismaClient } from "@prisma/client";
 export interface RequestDetails {
     method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -43,4 +44,7 @@ export interface XMLProperties {
 export interface AppContext {
     prisma: PrismaClient;
     userId?: number;
+};
+export type TestContext = {
+    client: ApolloServer;
 };

@@ -35,7 +35,8 @@
     "nexus": "^1.1.0",
     "querystring": "^0.2.1",
     "typescript": "^5.1.6",
-    "xml2js": "^0.6.0"
+    "xml2js": "^0.6.0",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",

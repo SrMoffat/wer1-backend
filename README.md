@@ -19,7 +19,7 @@ WeR1 backend
     - `creationDate`: Date track was created in external API
 - [x] When searching for a track by name, if it doesn't exist in DB, fetch it from API and insert into DB then return results
 - [] Include error handling and HTTP status codes for the GraphQL API
-- [] Use TypeScript for type safety and type definitions for the application
+- [x] Use TypeScript for type safety and type definitions for the application
 - [x] Write at least two tests for any of the features
 - [] Dockerfile or docker-compose file is a plus, otherwise provide comprehensive setup documentation
 - [x] Serve everything from a single endpoint `/graphql`
@@ -37,5 +37,3 @@ WeR1 backend
 ## Stretch Features
 - [] Allow users to bulk update tracks
 - [] Allow users to bulk delete tracks
-
-
