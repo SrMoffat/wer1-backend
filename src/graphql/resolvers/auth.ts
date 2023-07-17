@@ -28,7 +28,7 @@ export const loginResolver = async (parent: any, args: any, context: any) => {
             // @ts-ignore
             extensions: {
                 code: 'INVALID_CREDENTIALS',
-                statusCode: 400
+                statusCode: 403
             },
         });
     };
