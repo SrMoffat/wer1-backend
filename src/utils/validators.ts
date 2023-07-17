@@ -10,21 +10,19 @@ const commonAuthFields = {
         .required("Email is a required field.")
         .email("Invalid email provided."),
 };
-
 const userSignUpSchema = yup.object({
    ...commonAuthFields,
     password: yup.string()
         .required("Password is a required field")
         .matches(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-            "Password must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+            "Password have 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
         ),
 });
 const userLoginSchema = yup.object({
    ...commonAuthFields
 });
-
 export {
     userSignUpSchema,
     userLoginSchema
-}
+};
