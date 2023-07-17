@@ -1,14 +1,14 @@
-import { createTestContext } from './__helpers';
+import { createTestContext } from "./__helpers";
 
 import { SEED_USERS } from "../src/constants";
-import { loginMutation, fetchTracksQuery } from './queries';
+import { loginMutation, fetchTracksQuery } from "./queries";
 
 const candidateUser = SEED_USERS[0];
 
 const ctx = createTestContext();
 const authErrorMessage = "Invalid credentials";
 
-it('fetchTracks errors without auth headers', async () => {
+it("fetchTracks errors without auth headers", async () => {
   const trackResults = await ctx.client.executeOperation({
     query: fetchTracksQuery
   });
@@ -17,7 +17,7 @@ it('fetchTracks errors without auth headers', async () => {
   const errorMessage = hasErrors && hasErrors[0]?.message;
   expect(errorMessage).toContain(authErrorMessage);
 });
-it('fetchTracks returns with auth headers', async () => {
+it("fetchTracks returns with auth headers", async () => {
   const userDetails = {
     email: candidateUser.email,
     password: candidateUser.password,

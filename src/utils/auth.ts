@@ -13,7 +13,8 @@ import {
     MUSIC_STORY_CONSUMER_KEY,
     MUSIC_STORY_ACCESS_TOKEN,
     MUSIC_STORY_CONSUMER_SECRET,
-    MUSIC_STORY_ACCESS_TOKEN_SECRET
+    MUSIC_STORY_ACCESS_TOKEN_SECRET,
+    NONCE_CHARACTER_SET
 } from "../constants";
 
 export function generateOAuthParams() {
@@ -35,8 +36,8 @@ export function decodeAuthHeader(authHeader: string): AuthTokenPayload {
     return jwt.verify(token, APP_SECRET_KEY) as AuthTokenPayload;
 };
 export function generateNonce(length = 32) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let nonce = '';
+    const chars = NONCE_CHARACTER_SET;
+    let nonce = "";
     for (let i = 0; i < length; i++) {
         nonce += chars.charAt(Math.floor(Math.random() * chars.length));
     }
@@ -52,7 +53,7 @@ export function generateSignature(method: string, url: string, params: string) {
 };
 export async function makeOAuthRequest(details: RequestDetails) {
     try {
-        const url = ``;
+        const url = "";
         const method = "GET";
         const {
             additionalParams = {}
@@ -72,7 +73,7 @@ export async function makeOAuthRequest(details: RequestDetails) {
         const authHeader = `OAuth ${orderedParams.map(key => `${encodeValue(key)}="${encodeValue(oauthParams[key])}"`).join(', ')}, oauth_signature="${encodeValue(signature)}"`;
         const headers = {
             Authorization: authHeader,
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         };
         const response = await axios.request({
             method,

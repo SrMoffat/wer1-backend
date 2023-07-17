@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 export interface RequestDetails {
     url?: string;
     additionalParams: Object;
-    method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 };
 export interface AuthTokenPayload {
     userId: number;

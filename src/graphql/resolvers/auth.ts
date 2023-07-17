@@ -1,6 +1,8 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 
+import { GraphQLError } from 'graphql';
+
 import { APP_SECRET_KEY } from "../../constants";
 
 export const loginResolver = async (parent: any, args: any, context: any) => {
@@ -25,6 +27,13 @@ export const loginResolver = async (parent: any, args: any, context: any) => {
 };
 export const signupResolver = async (parent: any, args: any, context: any) => {
     // TODO: Add inout validation e.g. for email and password use Yup
+
+    // throw new GraphQLError(message, {
+    //     extensions: { code: 'YOUR_ERROR_CODE', myCustomExtensions },
+    //   });
+
+
+
     const { email, name } = args;
     const password = await bcrypt.hash(args.password, 10);
     const user = await context.prisma.user.create({

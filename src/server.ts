@@ -3,9 +3,11 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
 
 import { schema } from "./schema";
 import { context } from "./context";
+import { formatError } from "./utils/errorHandler";
 
 export const server = new ApolloServer({
     schema,
     context,
+    formatError,
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });

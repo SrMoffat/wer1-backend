@@ -10,7 +10,7 @@ const duplicateEmailError = "Unique constraint failed on the fields: (`email`)";
 
 const ctx = createTestContext();
 
-it('signupMutation errors when user already exists', async () => {
+it("signupMutation errors when user already exists", async () => {
     // Test assumed seed script (src/seed.ts) was run
     const userDetails = {
         name: candidateUser.name,
@@ -26,7 +26,7 @@ it('signupMutation errors when user already exists', async () => {
     const errorMessage = hasErrors && hasErrors[0]?.message;
     expect(errorMessage).toContain(duplicateEmailError);
 });
-it('signupMutation returns credentials', async () => {
+it("signupMutation returns credentials", async () => {
     // Test needs to cleanup DB after run
     const userDetails = {
         email: faker.internet.email(),
@@ -46,7 +46,7 @@ it('signupMutation returns credentials', async () => {
     expect(user.email).toBe(userDetails.email);
     expect(user.name).toBe(userDetails.name);
 });
-it('loginMutation errors when user does not exists', async () => {
+it("loginMutation errors when user does not exists", async () => {
     const userDetails = {
         email: faker.internet.email(),
         password: faker.internet.password(),
@@ -60,7 +60,7 @@ it('loginMutation errors when user does not exists', async () => {
     const errorMessage = hasErrors && hasErrors[0]?.message;
     expect(errorMessage).toContain(invalidAuthError);
 });
-it('loginMutation returns credentials', async () => {
+it("loginMutation returns credentials", async () => {
     // Test assumed seed script (src/seed.ts) was run
     const userDetails = {
         email: candidateUser.email,
