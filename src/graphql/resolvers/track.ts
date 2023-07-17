@@ -2,7 +2,7 @@ import { uniqBy, omit } from "lodash";
 import { GraphQLError } from 'graphql';
 
 import { fetchTracksByTitle } from "../../utils";
-import { INVALID_AUTH_ERROR, SERVER_ERROR } from "../../constants";
+import { INVALID_AUTH_ERROR } from "../../constants";
 
 export const fetchTracksResolver = async (parent: any, args: any, context: any) => {
     try {
