@@ -9,14 +9,14 @@ export const loginResolver = async (parent: any, args: any, context: any) => {
     });
     if (!user) {
         throw new Error("Invalid credentials");
-    }
+    };
     const valid = await bcrypt.compare(
         args.password,
         user.password,
     );
     if (!valid) {
         throw new Error("Invalid credentials");
-    }
+    };
     const token = jwt.sign({ userId: user.id }, APP_SECRET_KEY);
     return {
         token,

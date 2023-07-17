@@ -1,25 +1,13 @@
 import { createTestContext } from './__helpers';
 
 import { SEED_USERS } from "../src/constants";
-import { loginMutation } from './Auth.test';
+import { loginMutation, fetchTracksQuery } from './queries';
 
 const candidateUser = SEED_USERS[0];
 
 const ctx = createTestContext();
 const authErrorMessage = "Invalid credentials";
-const fetchTracksQuery = `
-    query fetchTracksQuery {
-      fetchTracks {
-        externalId
-        title
-        type
-        length
-        isrc
-        creationDate
-        productionDate
-      }
-    }
-`;
+
 it('fetchTracks errors without auth headers', async () => {
   const trackResults = await ctx.client.executeOperation({
     query: fetchTracksQuery

@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { createTestContext } from "./__helpers";
 
 import { SEED_USERS } from "../src/constants";
+import { loginMutation, signupMutation } from "./queries";
 
 const candidateUser = SEED_USERS[0];
 const invalidAuthError = "Invalid credentials";
@@ -9,30 +10,6 @@ const duplicateEmailError = "Unique constraint failed on the fields: (`email`)";
 
 const ctx = createTestContext();
 
-export const signupMutation = `
-    mutation signupMutation($email: String!, $password: String!, $name: String!) {
-        signup(email: $email, password: $password, name: $name) {
-        token
-        user {
-            id
-            name
-            email
-        }
-        }
-    }
-`;
-export const loginMutation = `
-    mutation loginMutation($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-        token
-        user {
-            id
-            name
-            email
-        }
-        }
-    }
-`;
 it('signupMutation errors when user already exists', async () => {
     // Test assumed seed script (src/seed.ts) was run
     const userDetails = {
