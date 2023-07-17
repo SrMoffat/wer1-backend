@@ -9,18 +9,18 @@ WeR1 backend
 ## Implementation Spec
 - [x] Implement base schema with `internalId`, `createdAt`, and `updatedAt`
 - [x] Extend base schema for `Track` to include:
-    - `id`: Identifier from the API
     - `title`: Name of the track
-    - `length`: Duration of the track in seconds
-    - `ISRC`: Internation Standard Recording Code
-    - `productionDate`: Date track was produced
-    - `creationDate`: Date track was created in external API
     - `type`: Genre of track
-    - `isHit`: If the track is a hit
+    - `externalId`: Identifier from the Music STory API
+    - `isrc`: Internation Standard Recording Code
+    - `length`: Duration of the track in seconds
+    - `productionDate`: Date track was produced
+    - `updateDate`: Date track was updated
+    - `creationDate`: Date track was created in external API
 - [x] When searching for a track by name, if it doesn't exist in DB, fetch it from API and insert into DB then return results
 - [] Include error handling and HTTP status codes for the GraphQL API
 - [] Use TypeScript for type safety and type definitions for the application
-- [] Write at least two tests for any of the features
+- [x] Write at least two tests for any of the features
 - [] Dockerfile or docker-compose file is a plus, otherwise provide comprehensive setup documentation
 - [x] Serve everything from a single endpoint `/graphql`
 
