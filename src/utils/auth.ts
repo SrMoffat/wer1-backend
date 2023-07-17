@@ -9,12 +9,12 @@ import { RequestDetails, AuthTokenPayload } from "../../types";
 import {
     OATH_VERSION,
     APP_SECRET_KEY,
+    NONCE_CHARACTER_SET,
     OATH_SIGNATURE_METHOD,
     MUSIC_STORY_CONSUMER_KEY,
     MUSIC_STORY_ACCESS_TOKEN,
     MUSIC_STORY_CONSUMER_SECRET,
     MUSIC_STORY_ACCESS_TOKEN_SECRET,
-    NONCE_CHARACTER_SET
 } from "../constants";
 
 export function generateOAuthParams() {

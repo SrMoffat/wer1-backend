@@ -25,3 +25,6 @@ http://localhost:4000/graphql
 git clone git@github.com:SrMoffat/wer1-backend.git
 cd wer1-backend
 ```
+2. Setup PostgreSQL
+3. Setup Prisma
+4. Seed database

@@ -17,13 +17,7 @@ export const fetchTracksResolver = async (parent: any, args: any, context: any) 
         };
         return await context.prisma.track.findMany();
     } catch (error) {
-        throw new GraphQLError(SERVER_ERROR, {
-            // @ts-ignore
-            extensions: {
-                code: 'SERVER_ERROR',
-                statusCode: 500
-            },
-        });
+        throw error;
     };
 };
 export const searchTrackByTitleResolver = async (parent: any, args: any, context: any) => {
@@ -76,13 +70,7 @@ export const searchTrackByTitleResolver = async (parent: any, args: any, context
             };
         };
     } catch (error) {
-        throw new GraphQLError(SERVER_ERROR, {
-            // @ts-ignore
-            extensions: {
-                code: 'SERVER_ERROR',
-                statusCode: 500
-            },
-        });
+        throw error;
     };
 };
 export const searchTrackByInternalIdResolver = async (parent: any, args: any, context: any) => {
@@ -103,13 +91,7 @@ export const searchTrackByInternalIdResolver = async (parent: any, args: any, co
         });
         return result;
     } catch (error) {
-        throw new GraphQLError(SERVER_ERROR, {
-            // @ts-ignore
-            extensions: {
-                code: 'SERVER_ERROR',
-                statusCode: 500
-            },
-        });
+        throw error;
     }
 };
 export const updateTrackResolver = async (parent: any, args: any, context: any) => {
@@ -133,13 +115,7 @@ export const updateTrackResolver = async (parent: any, args: any, context: any) 
         });
         return updatedTrack;
     } catch (error) {
-        throw new GraphQLError(SERVER_ERROR, {
-            // @ts-ignore
-            extensions: {
-                code: 'SERVER_ERROR',
-                statusCode: 500
-            },
-        });
+        throw error;
     }
 };
 export const deleteTrackResolver = async (parent: any, args: any, context: any) => {
@@ -154,12 +130,6 @@ export const deleteTrackResolver = async (parent: any, args: any, context: any) 
         });
         return deletedTrack;
     } catch (error) {
-        throw new GraphQLError(SERVER_ERROR, {
-            // @ts-ignore
-            extensions: {
-                code: 'SERVER_ERROR',
-                statusCode: 500
-            },
-        });
+        throw error;
     }
 };
