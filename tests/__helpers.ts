@@ -2,11 +2,8 @@
 import { ApolloServer } from "apollo-server";
 
 import { schema } from "../src/schema";
+import { TestContext } from "../types";
 import { context } from "../src/context";
-
-type TestContext = {
-    client: ApolloServer;
-};
 
 export function createTestContext(): TestContext {
     let ctx = {} as TestContext;
