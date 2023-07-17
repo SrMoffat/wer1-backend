@@ -38,9 +38,9 @@ export const formatError = (formattedError: GraphQLError) => {
                 ...GRAPHQL_TO_HTTP_ERROR_CODES.FORBIDDEN,
                 ...commonErrorDetails,
             };
-        case "INTERNAL_SERVER_ERROR":
+        case "INVALID_CREDENTIALS":
             return {
-                ...GRAPHQL_TO_HTTP_ERROR_CODES.INTERNAL_SERVER_ERROR,
+                ...GRAPHQL_TO_HTTP_ERROR_CODES.INVALID_CREDENTIALS,
                 ...commonErrorDetails,
             };
         case "INTERNAL_SERVER_ERROR":
