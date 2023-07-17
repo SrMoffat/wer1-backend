@@ -1,7 +1,7 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 
-import { APP_SECRET_KEY } from "../../utils/auth";
+import { APP_SECRET_KEY } from "../../constants";
 
 export const loginResolver = async (parent: any, args: any, context: any) => {
     const user = await context.prisma.user.findUnique({

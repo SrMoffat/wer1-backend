@@ -38,11 +38,11 @@ it('signupMutation returns credentials', async () => {
         variables: userDetails
     });
     const hasData = signupResults.data;
+    expect(hasData).toBeTruthy();
     const response = hasData && hasData?.signup;
     const token = response.token;
-    const user = response.user;
-    expect(hasData).toBeTruthy();
     expect(token).toBeTruthy();
+    const user = response.user;
     expect(user.email).toBe(userDetails.email);
     expect(user.name).toBe(userDetails.name);
 });

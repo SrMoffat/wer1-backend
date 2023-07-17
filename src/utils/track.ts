@@ -1,15 +1,14 @@
 // https://developers.music-story.com/developers/track#c_search
 import axios from "axios";
-import { pick, get } from "lodash";
 import querystring from "querystring";
+
+import { pick, get } from "lodash";
 import { parseStringPromise } from "xml2js";
 
 import { NexusGenObjects } from "../../nexus-typegen";
 import { RequestDetails, XMLProperties } from "../../types";
+import { MUSIC_STORY_BASE_URL, MUSIC_STORY_LANGUAGE } from "../constants";
 import { generateOAuthParams, generateSignature, encodeValue } from "./auth";
-
-const MUSIC_STORY_LANGUAGE = "en";
-const MUSIC_STORY_BASE_URL = "https://api.music-story.com";
 
 function extractTrackDetails(details: XMLProperties) {
     const selectKeys = [
