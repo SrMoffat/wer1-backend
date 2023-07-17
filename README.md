@@ -18,7 +18,7 @@ WeR1 backend
     - `updateDate`: Date track was updated
     - `creationDate`: Date track was created in external API
 - [x] When searching for a track by name, if it doesn't exist in DB, fetch it from API and insert into DB then return results
-- [] Include error handling and HTTP status codes for the GraphQL API
+- [x] Include error handling and HTTP status codes for the GraphQL API
 - [x] Use TypeScript for type safety and type definitions for the application
 - [x] Write at least two tests for any of the features
 - [] Dockerfile or docker-compose file is a plus, otherwise provide comprehensive setup documentation
