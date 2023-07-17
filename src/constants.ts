@@ -14,7 +14,16 @@ export const MUSIC_STORY_ACCESS_TOKEN_SECRET = process.env.MUSIC_STORY_ACCESS_TO
 export const NONCE_CHARACTER_SET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 export const GRAPHQL_TO_HTTP_ERROR_CODES = {
     BAD_USER_INPUT: {
+        statusCode: 422,
+    },
+    GRAPHQL_PARSE_FAILED: {
+        statusCode: 422,
+    },
+    BAD_REQUEST: {
         statusCode: 400,
+    },
+    INTERNAL_SERVER_ERROR: {
+        statusCode: 500,
     }
 };
 export const SEED_USERS = [
