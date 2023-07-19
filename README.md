@@ -29,7 +29,7 @@ cd wer1-backend
 ```bash
 cat .env.example >> .env
 ```
-3. Create a [Music Story Account](https://developers.music-story.com/developers) and set the following environment variables:
+3. Create a [Music Story Account](https://developers.music-story.com/developers) and set the following environment variables in `.env`:
 ```bash
 MUSIC_STORY_CONSUMER_KEY=
 MUSIC_STORY_CONSUMER_SECRET=
@@ -37,6 +37,122 @@ MUSIC_STORY_ACCESS_TOKEN=
 MUSIC_STORY_ACCESS_TOKEN_SECRET=
 APP_SECRET_KEY=this can be any random string
 ```
-3. Setup PostgreSQL
-4. Setup Prisma
-5. Seed database
+4. Add DB credentials to be used by docker for PostgreSQL
+```bash
+POSTGRES_USER="postgres"
+POSTGRES_PASSWORD="postgres"
+POSTGRES_DB="dev"
+
+// Add server port
+PORT=4000
+```
+5. Start server
+```bash
+docker-compose up --build
+```
+6. Test the server
+```bash
+Sign Up User
+
+mutation signupMutation($email: String!, $password: String!, $name: String!) {
+  signup(email: $email, password: $password, name: $name) {
+    token
+    user {
+       id
+       name
+       email
+    }
+  }
+}
+```
+```bash
+Login User
+
+mutation loginMutation($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
+    user {
+      id
+      name
+      email
+    }
+  }
+}
+```
+```bash
+Fetch Tracks
+
+query fetchTracksQuery {
+  fetchTracks {
+    externalId
+    title
+    type
+    length
+    isrc
+    creationDate
+    productionDate
+  }
+}
+```
+```bash
+Search Track by Title
+
+query searchTrackQuery($title: String!) {
+  searchTrackByTitle(title: $title) {
+    externalId
+    title
+    type
+    length
+    isrc
+    creationDate
+    productionDate
+  } 
+}
+```
+```bash
+Search Track by Internal ID
+
+query searchTrackByInternalId($internalId: Int!) {
+  searchTrackByInternalId(internalId: $internalId) {
+    externalId
+    title
+    type
+    length
+    isrc
+    creationDate
+    productionDate
+  } 
+}
+```
+```bash
+Update Track Details by ID
+
+mutation updateTrackMutation($creationDate: String, $internalId: String, $isrc: String, $productionDate: String, $title: String, $type: String) {
+  updateTrack(creationDate: $creationDate, internalId: $internalId, isrc: $isrc, productionDate: $productionDate, title: $title, type: $type) {
+     externalId
+    title
+    type
+    length
+    isrc
+    creationDate
+    productionDate
+    
+  }
+}
+```
+```bash
+Delete Track by ID
+
+mutation deleteTrackMutation($internalId: Int) {
+  deleteTrack(internalId: $internalId) {
+    externalId
+    title
+    type
+    length
+    isrc
+    creationDate
+    productionDate
+    
+  }
+}
+```
