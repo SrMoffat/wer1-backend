@@ -15,3 +15,5 @@ export const context = ({ req }: { req: Request }): AppContext => {
         userId: token?.userId
     }
 };
+
+export type Context = typeof context

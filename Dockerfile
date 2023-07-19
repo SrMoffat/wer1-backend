@@ -2,14 +2,14 @@ FROM node:14
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package*.json ./
 
-RUN yarn install --frozen-lockfile
+RUN npm ci
 
 COPY . .
 
-RUN yarn generate
-RUN yarn build
+RUN npm run generate
+RUN npm run build
 
 EXPOSE 4000
 
