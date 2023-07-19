@@ -29,7 +29,7 @@ cd wer1-backend
 ```bash
 cat .env.example >> .env
 ```
-3. Create a [Music Story Account](https://developers.music-story.com/developers) and set the following environment variables:
+3. Create a [Music Story Account](https://developers.music-story.com/developers) and set the following environment variables in `.env`:
 ```bash
 MUSIC_STORY_CONSUMER_KEY=
 MUSIC_STORY_CONSUMER_SECRET=
@@ -37,6 +37,13 @@ MUSIC_STORY_ACCESS_TOKEN=
 MUSIC_STORY_ACCESS_TOKEN_SECRET=
 APP_SECRET_KEY=this can be any random string
 ```
-3. Setup PostgreSQL
-4. Setup Prisma
-5. Seed database
+4. Add DB credentials to be used by docker for PostgreSQL
+```bash
+POSTGRES_USER="postgres"
+POSTGRES_PASSWORD="postgres"
+POSTGRES_DB="dev"
+```
+5. Start server
+```bash
+docker-compose up --build
+```
