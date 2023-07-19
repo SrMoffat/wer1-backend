@@ -10,6 +10,7 @@ COPY . .
 
 RUN npm run generate
 RUN npm run build
+RUN npm run db:seed
 
 EXPOSE 4000
 
