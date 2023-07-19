@@ -9,7 +9,7 @@
     "generate": "ts-node --transpile-only src/schema.ts",
     "migrate:deploy": "prisma migrate deploy",
     "db:seed": "ts-node src/seed.ts",
-    "build": "prisma generate && npm run generate && tsc",
+    "build": "prisma generate && npm run generate && tsc --build",
     "start": "node dist/src/index.js",
     "export:env": "set -o allexport; source .env; set +o allexport"
   },
