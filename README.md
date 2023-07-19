@@ -25,6 +25,18 @@ http://localhost:4000/graphql
 git clone git@github.com:SrMoffat/wer1-backend.git
 cd wer1-backend
 ```
-2. Setup PostgreSQL
-3. Setup Prisma
-4. Seed database
+2. Create environment variables file using template
+```bash
+cat .env.example >> .env
+```
+3. Create a [Music Story Account](https://developers.music-story.com/developers) and set the following environment variables:
+```bash
+MUSIC_STORY_CONSUMER_KEY=
+MUSIC_STORY_CONSUMER_SECRET=
+MUSIC_STORY_ACCESS_TOKEN=
+MUSIC_STORY_ACCESS_TOKEN_SECRET=
+APP_SECRET_KEY=this can be any random string
+```
+3. Setup PostgreSQL
+4. Setup Prisma
+5. Seed database
