@@ -4,12 +4,14 @@
   "description": "WeR1 backend",
   "main": "index.js",
   "scripts": {
-    "test": "npm run generate && jest",
+    "test": "npm run prisma:generate && jest",
     "dev": "ts-node-dev --transpile-only --no-notify --exit-child src/index.ts",
-    "generate": "ts-node --transpile-only src/schema.ts",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate:dev": "npx prisma migrate dev",
+    "types:generate": "ts-node --transpile-only src/schema.ts",
     "migrate:deploy": "prisma migrate deploy",
-    "db:seed": "ts-node src/seed.ts",
-    "build": "prisma generate && npm run generate && tsc --build",
+    "db:seed": "npx ts-node src/seed.ts",
+    "build": "npm run prisma:generate && npm run types:generate && tsc --build",
     "start": "node dist/src/index.js",
     "export:env": "set -o allexport; source .env; set +o allexport"
   },
