@@ -3,6 +3,7 @@ FROM node:16.18.1
 WORKDIR /app
 
 COPY package*.json ./
+COPY prisma ./prisma/
 
 RUN npm install
 
