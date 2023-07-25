@@ -20,6 +20,15 @@ http://localhost:4000/graphql
 
 
 ## Local Setup (without Docker)
+You need to install PostgreSQL on your machine and run it:
+```bash 
+e.g. on Mac OS:
+
+brew install postgresql
+brew services start postgresql
+```
+
+When the postgreSQL database it up and running then:
 1. Clone the repository and change into it
 ```bash
 git clone git@github.com:SrMoffat/wer1-backend.git
@@ -31,26 +40,27 @@ cat .env.example >> .env
 ```
 3. Create a [Music Story Account](https://developers.music-story.com/developers) and set the following environment variables in `.env`:
 ```bash
-MUSIC_STORY_CONSUMER_KEY=
-MUSIC_STORY_CONSUMER_SECRET=
-MUSIC_STORY_ACCESS_TOKEN=
-MUSIC_STORY_ACCESS_TOKEN_SECRET=
-APP_SECRET_KEY=this can be any random string
+export MUSIC_STORY_CONSUMER_KEY=
+export MUSIC_STORY_CONSUMER_SECRET=
+export MUSIC_STORY_ACCESS_TOKEN=
+export MUSIC_STORY_ACCESS_TOKEN_SECRET=
+export APP_SECRET_KEY=this can be any random string
 ```
-4. Add DB credentials to be used by docker for PostgreSQL
+4. Add DB credentials to be used for PostgreSQL
 ```bash
-POSTGRES_USER="postgres"
-POSTGRES_PASSWORD="postgres"
-POSTGRES_DB="dev"
+export POSTGRES_USER="postgres"
+export POSTGRES_PASSWORD="postgres"
+export POSTGRES_DB="dev"
 
 // Add server port
-PORT=4000
+export PORT=4000
 ```
-5. Start server
+5. Export environment variables and then start the server
 ```bash
 docker-compose up --build
 ```
-6. Test the server
+
+## Queries to test
 ```bash
 Sign Up User
 
